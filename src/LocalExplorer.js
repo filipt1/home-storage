@@ -20,6 +20,7 @@ function LocalExplorer({ homeLocal, homeRemote }) {
   const [path, setPath] = useState(
     pathModule.join(app.getPath("home"), homeLocal)
   );
+  const [searchString, setSearchString] = useState("");
 
   const files = useMemo(
     () =>
@@ -45,8 +46,7 @@ function LocalExplorer({ homeLocal, homeRemote }) {
   const onBack = () => setPath(pathModule.dirname(path));
   const onOpen = (folder) => setPath(pathModule.join(path, folder));
 
-  const [searchString, setSearchString] = useState("");
-  const filteredFiles = files.filter((s) => s.name.startsWith(searchString));
+  const filteredFiles = files.filter((s) => s.name.includes(searchString));
 
   return (
     <div className="form-group mt-4 mb-2">

@@ -43,3 +43,7 @@ exports.deleteFile = (targetFile, path) => {
 exports.deleteDirectory = (targetDir, path) => {
   ipcRenderer.send("delete-directory", pathModule.join(path, targetDir));
 };
+
+exports.createDirectory = (path) => {
+  ipcRenderer.send("create-directory", path);
+};

@@ -14,8 +14,8 @@ let client;
 
 async function createWindow() {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 900,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
@@ -73,6 +73,10 @@ ipcMain.on("delete-file", async function (event, path) {
 
 ipcMain.on("delete-directory", async function (event, path) {
   await handlers.deleteDirectory(client, path);
+});
+
+ipcMain.on("create-directory", async function (event, path) {
+  await handlers.createDirectory(client, path);
 });
 
 app.on("ready", () => {

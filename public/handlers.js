@@ -79,3 +79,11 @@ exports.deleteDirectory = async (client, path) => {
     console.error(err);
   }
 };
+
+exports.createDirectory = async (client, path) => {
+  try {
+    await client.mkdir(path, true);
+  } catch (err) {
+    console.error(err);
+  }
+};

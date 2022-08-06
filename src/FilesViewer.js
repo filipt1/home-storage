@@ -13,7 +13,6 @@ function FilesViewer({ files, onBack, onOpen, homeRemote, homeLocal, path }) {
           </td>
           <td>...</td>
           <td></td>
-          <td></td>
         </tr>
 
         {files.map((file) => {
@@ -32,13 +31,6 @@ function FilesViewer({ files, onBack, onOpen, homeRemote, homeLocal, path }) {
                 {file.directory ? <IconFolder /> : <IconFile />}
               </td>
               <td>{file.name}</td>
-              <td>
-                {homeRemote ? (
-                  <i className="material-icons">file_upload</i>
-                ) : (
-                  <i className="material-icons">file_download</i>
-                )}
-              </td>
             </tr>
           );
         })}
