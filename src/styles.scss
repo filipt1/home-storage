@@ -1,0 +1,120 @@
+$font-color: #495867;
+$main-color: #FE5F55;
+$secondary-color: #577399;
+$tertiary-color: #BDD5EA;
+$main-margin: 2rem;
+$sec-margin: 1rem;
+$main-padding: 1rem;
+$input-padding: 0.5rem;
+$heading-font-size: 2rem;
+$main-font-size: 1rem;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: $font-color;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: $tertiary-color;
+}
+
+.main-container {
+  display: flex;
+}
+
+.navbar {
+  position: fixed;
+  margin: $main-margin 0;
+  padding: 0 $main-padding;
+  width: 25%;
+  border-right: 1px solid $font-color;
+}
+
+.navbar ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.navbar a {
+  text-decoration: none;
+  font-size: $heading-font-size;
+  display: inline-block;
+  margin-bottom: $sec-margin;
+}
+
+.navbar a:hover {
+  color: $main-color
+}
+
+.explorer {
+  margin-left: 25%;
+  width: 75%;
+}
+
+.explorer__path {
+  margin-left: $main-margin;
+  margin-top: $main-margin;
+  font-size: $main-font-size;
+  padding: $main-padding 0;
+  border-bottom: 1px solid $font-color;
+  border-top: 1px solid $font-color;
+}
+
+.explorer__action-bar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: $sec-margin 0;
+}
+
+.explorer__file-search {
+  display: flex;
+  justify-content: center;
+}
+
+.explorer__file-search-input {
+  width: 50%;
+  padding: $input-padding;
+}
+
+.files-table {
+  margin-left: $main-margin;
+}
+
+.files-table .material-symbols-outlined {
+  margin-right: 0.5rem;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.icon-row {
+  width: 2em;
+}
+
+.icon-folder {
+  width: 1em;
+}
+
+.icon-file {
+  width: 0.75em;
+}
+
+.remote-explorer__directory-input {
+  position: absolute;
+  bottom: -1.5rem;
+  left: 0;
+}
+
+.files-table__back-btn td{
+  padding: $main-padding 0;
+}
+
+.files-table td:hover {
+  color: $main-color
+}

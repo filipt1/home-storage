@@ -49,14 +49,16 @@ function LocalExplorer({ homeLocal, homeRemote }) {
   const filteredFiles = files.filter((s) => s.name.includes(searchString));
 
   return (
-    <div className="form-group mt-4 mb-2">
-      <h4>{path}</h4>
-      <input
-        value={searchString}
-        onChange={(event) => setSearchString(event.target.value)}
-        className="form-control form-control-sm"
-        placeholder="File search"
-      />
+    <main className="explorer">
+      <h4 className="explorer__path">{path}</h4>
+      <div className="explorer__file-search">
+        <input
+          value={searchString}
+          onChange={(event) => setSearchString(event.target.value)}
+          className="explorer__file-search-input"
+          placeholder="File search"
+        />
+      </div>
       <FilesViewer
         files={filteredFiles}
         onBack={onBack}
@@ -64,7 +66,7 @@ function LocalExplorer({ homeLocal, homeRemote }) {
         homeRemote={homeRemote}
         path={path}
       />
-    </div>
+    </main>
   );
 }
 

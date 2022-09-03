@@ -81,8 +81,12 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
 
   const createDirectoryInput = () => {
     return (
-      <span>
-        <input value={newDir} onChange={(e) => setNewDir(e.target.value)} />
+      <span className="remote-explorer__directory-input">
+        <input
+          value={newDir}
+          onChange={(e) => setNewDir(e.target.value)}
+          placeholder="New directory name"
+        />
         <i className="material-icons clickable" onClick={() => createNewDir()}>
           done
         </i>
@@ -104,20 +108,39 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
   const filteredFiles = files.filter((s) => s.name.includes(searchString));
 
   return (
-    <div>
-      <button onClick={uploadFileDialog}>Upload File</button>
-      <button onClick={uploadDirectoryDialog}>Upload Directory</button>
-      <button onClick={() => setIsCreating(true)} disabled={isCreating}>
-        Create Directory
-      </button>
-      {isCreating ? createDirectoryInput() : ""}
-      <h4>{path}</h4>
-      <input
-        value={searchString}
-        onChange={(event) => setSearchString(event.target.value)}
-        className="form-control form-control-sm"
-        placeholder="File search"
-      />
+    <main className="explorer">
+      <h2 className="explorer__path">{path}</h2>
+      <div className="explorer__action-bar">
+        <span
+          className="material-symbols-outlined clickable"
+          onClick={uploadFileDialog}
+        >
+          upload_file
+        </span>
+        <span
+          className="material-symbols-outlined clickable"
+          onClick={uploadDirectoryDialog}
+        >
+          drive_folder_upload
+        </span>
+        <span
+          className="material-symbols-outlined clickable"
+          onClick={() => setIsCreating(true)}
+        >
+          create_new_folder
+        </span>
+        {isCreating ? createDirectoryInput() : ""}
+      </div>
+
+      <div className="explorer__file-search">
+        <input
+          value={searchString}
+          onChange={(e) => setSearchString(e.target.value)}
+          className="explorer__file-search-input"
+          placeholder="File search"
+        />
+      </div>
+
       <FilesViewer
         files={filteredFiles}
         onOpen={onOpen}
@@ -125,7 +148,7 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
         homeLocal={homeLocal}
         path={path}
       />
-    </div>
+    </main>
   );
 }
 

@@ -19,18 +19,19 @@ function App() {
   }, []);
 
   return (
-    <div className="container mt-2">
+    <div className="main-container">
       <HashRouter>
-        <div className="navbar">
-          <nav>
-            <ul>
-              <li>
-                <Link to="/local-explorer">LocalExplorer</Link>
-                <Link to="/remote-explorer">RemoteExplorer</Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
+        <nav className="navbar">
+          <ul>
+            <li>
+              <Link to="/local-explorer">Local explorer</Link>
+            </li>
+            <li>
+              <Link to="/remote-explorer">Remote explorer</Link>
+            </li>
+          </ul>
+        </nav>
+
         <Routes>
           <Route
             exact

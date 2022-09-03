@@ -5,20 +5,19 @@ import displayRemoteContextMenu from "./menus/RemoteContextMenu";
 
 function FilesViewer({ files, onBack, onOpen, homeRemote, homeLocal, path }) {
   return (
-    <table className="table">
+    <table className="files-table">
       <tbody>
-        <tr className="clickable" onClick={onBack}>
+        <tr className="clickable files-table__back-btn" onClick={onBack}>
           <td className="icon-row">
             <IconFolderOpen />
           </td>
           <td>...</td>
-          <td></td>
         </tr>
 
         {files.map((file) => {
           return (
             <tr
-              className="clickable"
+              className={file.directory ? "clickable" : ""}
               onClick={() => file.directory && onOpen(file.name)}
               key={file.name}
               onContextMenu={(e) =>
