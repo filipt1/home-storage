@@ -123,4 +123,12 @@ body {
 .files-table td:hover {
   color: #FE5F55;
 }
+
+.no-pointer-events {
+  pointer-events: none;
+}
+
+.hovered {
+  background-color: red;
+}
 /*# sourceMappingURL=styles.css.map */

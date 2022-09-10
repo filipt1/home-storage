@@ -118,3 +118,11 @@ body {
 .files-table td:hover {
   color: $main-color
 }
+
+.no-pointer-events {
+  pointer-events: none;
+}
+
+.hovered {
+  background-color: red;
+}
