@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Draggable from "react-draggable";
 
 import { IconFolder, IconFile } from "./Icons";
+import { renamePath } from "./ipcController";
 
 import displayLocalContextMenu from "./menus/LocalContextMenu";
 import displayRemoteContextMenu from "./menus/RemoteContextMenu";
@@ -16,9 +17,7 @@ function DraggableFile({ file, homeLocal, homeRemote, path, onOpen }) {
 
   const onStop = (e) => {
     if (e.target.classList.contains("draggable-dropzone")) {
-      console.log(e);
-      alert("Dropped!");
-      e.target.classList.remove("hovered");
+      renamePath(path, file.name, e.target.id);
     }
     setIsDragging(false);
   };
@@ -37,14 +36,12 @@ function DraggableFile({ file, homeLocal, homeRemote, path, onOpen }) {
         className={`${file.directory ? "clickable draggable-dropzone" : ""} ${
           isDragging ? "no-pointer-events" : ""
         }`}
-        key={file.name}
+        id={file.name}
         onContextMenu={(e) =>
           homeRemote
             ? displayLocalContextMenu(e, file, path, homeRemote)
             : displayRemoteContextMenu(e, file, path, homeLocal)
         }
-        onMouseEnter={onDropAreaMouseEnter}
-        onMouseLeave={onDropAreaMouseLeave}
       >
         {file.directory ? <IconFolder /> : <IconFile />}
         {file.name}

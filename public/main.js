@@ -80,6 +80,10 @@ ipcMain.on("create-directory", async function (event, path) {
   await handlers.createDirectory(client, path);
 });
 
+ipcMain.on("rename-path", async function (event, path, targetPath) {
+  await handlers.rename(client, path, targetPath);
+});
+
 app.on("ready", () => {
   createWindow();
 });

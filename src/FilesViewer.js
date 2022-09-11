@@ -20,6 +20,7 @@ function FilesViewer({ files, onBack, onOpen, homeRemote, homeLocal, path }) {
               homeRemote={homeRemote}
               path={path}
               onOpen={onOpen}
+              key={file.name}
             />
           );
         })}

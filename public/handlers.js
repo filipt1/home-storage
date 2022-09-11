@@ -87,3 +87,11 @@ exports.createDirectory = async (client, path) => {
     console.error(err);
   }
 };
+
+exports.rename = async (client, path, targetPath) => {
+  try {
+    await client.rename(path, targetPath);
+  } catch (err) {
+    console.error(err);
+  }
+};
