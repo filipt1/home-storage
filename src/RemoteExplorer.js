@@ -22,6 +22,7 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
   const [files, setFiles] = useState([]);
   const [newDir, setNewDir] = useState("");
   const [isCreating, setIsCreating] = useState(false);
+  const [refreshFiles, setRefreshFiles] = useState(false);
 
   useEffect(() => {
     ipcRenderer.send("list-files", path);
@@ -34,19 +35,20 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
       });
 
       setFiles(filesRaw);
+      setRefreshFiles(false);
     });
 
     return () => {
       setFiles([]);
     };
-  }, [path]);
+  }, [path, refreshFiles]);
 
   const onOpen = (file) => {
     setPath(path + "/" + file);
   };
 
-  const onBack = () => {
-    setPath(pathModule.dirname(path));
+  const onBack = (e) => {
+    if (e.detail === 2) setPath(pathModule.dirname(path));
   };
 
   const uploadFileDialog = () => {
@@ -147,6 +149,7 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
         onBack={onBack}
         homeLocal={homeLocal}
         path={path}
+        setRefreshFiles={setRefreshFiles}
       />
     </main>
   );

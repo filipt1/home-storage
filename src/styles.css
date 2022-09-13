@@ -131,4 +131,18 @@ body {
 .hovered {
   background-color: red;
 }
+
+.files-table__file-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.file__default-position {
+  -webkit-transform: translate(0, 0);
+          transform: translate(0, 0);
+}
 /*# sourceMappingURL=styles.css.map */

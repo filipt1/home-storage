@@ -126,3 +126,12 @@ body {
 .hovered {
   background-color: red;
 }
+
+.files-table__file-row {
+  display: flex;
+  align-items: center;
+}
+
+.file__default-position {
+  transform: translate(0, 0);
+}
