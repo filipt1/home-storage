@@ -7,6 +7,8 @@ import { renamePath } from "./ipcController";
 import displayLocalContextMenu from "./menus/LocalContextMenu";
 import displayRemoteContextMenu from "./menus/RemoteContextMenu";
 
+const pathModule = window.require("path");
+
 function DraggableFile({
   file,
   homeLocal,
@@ -26,7 +28,19 @@ function DraggableFile({
 
   const onStop = (e, data) => {
     if (e.target.classList.contains("draggable-dropzone")) {
-      renamePath(path, file.name, e.target.id);
+      renamePath(
+        path,
+        file.name,
+        pathModule.join(path, e.target.id, file.name)
+      );
+      setRefreshFiles(true);
+    } else if (e.target.classList.contains("draggable-go-back")) {
+      renamePath(
+        path,
+        file.name,
+        pathModule.join(pathModule.dirname(path), file.name)
+      );
+
       setRefreshFiles(true);
     } else {
       data.node.style.transform = "translate(0,0)";

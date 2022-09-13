@@ -4,6 +4,21 @@ const { ipcRenderer } = window.require("electron");
 
 const { app } = window.require("@electron/remote");
 
+// exports.listFiles = (path) => {
+//   let filesRaw;
+//   ipcRenderer.send("list-files", path);
+//   ipcRenderer.on("list-files-reply", (event, res) => {
+//     filesRaw = res.map((file) => {
+//       return {
+//         name: file.name,
+//         directory: file.type === "d",
+//       };
+//     });
+//   });
+
+//   return filesRaw;
+// };
+
 exports.uploadFile = (targetFile, path, homeRemote) => {
   ipcRenderer.send(
     "upload-file",
@@ -52,6 +67,6 @@ exports.renamePath = (path, targetFile, targetPath) => {
   ipcRenderer.send(
     "rename-path",
     pathModule.join(path, targetFile),
-    pathModule.join(path, targetPath, targetFile)
+    targetPath
   );
 };

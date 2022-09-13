@@ -12,7 +12,10 @@ function FilesViewer({
 }) {
   return (
     <div className="files-table">
-      <span className="clickable files-table__back-btn" onClick={onBack}>
+      <span
+        className="clickable files-table__back-btn draggable-go-back"
+        onClick={onBack}
+      >
         <IconFolderOpen />
         ...
       </span>

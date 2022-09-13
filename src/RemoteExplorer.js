@@ -33,13 +33,13 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
           directory: file.type === "d",
         };
       });
-
       setFiles(filesRaw);
-      setRefreshFiles(false);
     });
 
     return () => {
       setFiles([]);
+      setRefreshFiles(false);
+      ipcRenderer.removeAllListeners("list-files-reply");
     };
   }, [path, refreshFiles]);
 
@@ -104,6 +104,7 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
 
   const createNewDir = () => {
     createDirectory(pathModule.join(path, newDir));
+    setRefreshFiles(true);
     setIsCreating(false);
   };
 
