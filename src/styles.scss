@@ -106,9 +106,26 @@ body {
 }
 
 .remote-explorer__directory-input {
+  background-color: $secondary-color;
+  border-radius: 1rem;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  bottom: -1.5rem;
-  left: 0;
+  top: 0;
+  left: 20%;
+}
+
+.remote-explorer__directory-input input {
+  width: 80%;
+  padding: $input-padding;
+  margin-top: $main-margin;
+}
+
+.remote-explorer__directory-input i {
+  color: white;
 }
 
 .files-table__back-btn td{

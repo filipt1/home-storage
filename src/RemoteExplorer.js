@@ -83,22 +83,27 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
 
   const createDirectoryInput = () => {
     return (
-      <span className="remote-explorer__directory-input">
+      <div className="remote-explorer__directory-input">
         <input
           value={newDir}
           onChange={(e) => setNewDir(e.target.value)}
           placeholder="New directory name"
         />
-        <i className="material-icons clickable" onClick={() => createNewDir()}>
-          done
-        </i>
-        <i
-          className="material-icons clickable"
-          onClick={() => setIsCreating(false)}
-        >
-          clear
-        </i>
-      </span>
+        <span className="remote__explorer__directory-input__buttons">
+          <i
+            className="material-icons clickable"
+            onClick={() => createNewDir()}
+          >
+            done
+          </i>
+          <i
+            className="material-icons clickable"
+            onClick={() => setIsCreating(false)}
+          >
+            clear
+          </i>
+        </span>
+      </div>
     );
   };
 
