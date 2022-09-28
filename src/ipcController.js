@@ -1,4 +1,5 @@
 const pathModule = window.require("path");
+const os = window.require("os");
 
 const { ipcRenderer } = window.require("electron");
 
@@ -19,18 +20,23 @@ const { app } = window.require("@electron/remote");
 //   return filesRaw;
 // };
 
+function parsePath(path) {
+  if (os.platform() === "win32") return path.replace("\\", "/");
+  return path;
+}
+
 exports.uploadFile = (targetFile, path, homeRemote) => {
   ipcRenderer.send(
     "upload-file",
     pathModule.join(path, targetFile),
-    pathModule.join(homeRemote, targetFile)
+    parsePath(pathModule.join(homeRemote, targetFile))
   );
 };
 
 exports.downloadFile = (targetFile, path, homeLocal) => {
   ipcRenderer.send(
     "download-file",
-    pathModule.join(path, targetFile),
+    parsePath(pathModule.join(path, targetFile)),
     pathModule.join(app.getPath("home"), homeLocal, targetFile)
   );
 };
@@ -39,24 +45,27 @@ exports.uploadDirectory = (targetDir, path, homeRemote) => {
   ipcRenderer.send(
     "upload-directory",
     pathModule.join(path, targetDir),
-    pathModule.join(homeRemote, targetDir)
+    parsePath(pathModule.join(homeRemote, targetDir))
   );
 };
 
 exports.downloadDirectory = (targetDir, path, homeLocal) => {
   ipcRenderer.send(
     "download-directory",
-    pathModule.join(path, targetDir),
-    pathModule.join(homeLocal, targetDir)
+    parsePath(pathModule.join(path, targetDir)),
+    pathModule.join(app.getPath("home"), homeLocal, targetDir)
   );
 };
 
 exports.deleteFile = (targetFile, path) => {
-  ipcRenderer.send("delete-file", pathModule.join(path, targetFile));
+  ipcRenderer.send("delete-file", parsePath(pathModule.join(path, targetFile)));
 };
 
 exports.deleteDirectory = (targetDir, path) => {
-  ipcRenderer.send("delete-directory", pathModule.join(path, targetDir));
+  ipcRenderer.send(
+    "delete-directory",
+    parsePath(pathModule.join(path, targetDir))
+  );
 };
 
 exports.createDirectory = (path) => {
@@ -66,7 +75,7 @@ exports.createDirectory = (path) => {
 exports.renamePath = (path, targetFile, targetPath) => {
   ipcRenderer.send(
     "rename-path",
-    pathModule.join(path, targetFile),
-    targetPath
+    parsePath(pathModule.join(path, targetFile)),
+    parsePath(targetPath)
   );
 };

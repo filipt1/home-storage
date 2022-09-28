@@ -20,7 +20,6 @@ function DraggableFile({
   const [isDragging, setIsDragging] = useState(false);
   const nodeRef = useRef(null);
 
-  // hrani si s data properties pro resetovani default pozice
   const onStart = (e) => {
     setIsDragging(true);
     file.directory && e.detail === 2 && onOpen(file.name);

@@ -14,8 +14,8 @@ let client;
 
 async function createWindow() {
   const win = new BrowserWindow({
-    width: 1200,
-    height: 900,
+    width: 800,
+    height: 600,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,

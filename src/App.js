@@ -3,6 +3,7 @@ import { Link, HashRouter, Routes, Route } from "react-router-dom";
 
 import LocalExplorer from "./LocalExplorer";
 import RemoteExplorer from "./RemoteExplorer";
+import Settings from "./Settings";
 
 const { ipcRenderer } = window.require("electron");
 
@@ -16,6 +17,10 @@ function App() {
       setHomeLocal(res.homeLocal);
       setHomeRemote(res.homeRemote);
     });
+
+    return () => {
+      ipcRenderer.removeAllListeners("initialize-sftp-reply");
+    };
   }, []);
 
   return (
@@ -28,6 +33,9 @@ function App() {
             </li>
             <li>
               <Link to="/remote-explorer">Remote explorer</Link>
+            </li>
+            <li>
+              <Link to="/settings">Settings</Link>
             </li>
           </ul>
         </nav>
@@ -46,6 +54,11 @@ function App() {
             element={
               <RemoteExplorer homeLocal={homeLocal} homeRemote={homeRemote} />
             }
+          />
+          <Route
+            exact
+            path="/settings"
+            element={<Settings homeLocal={homeLocal} homeRemote={homeRemote} />}
           />
         </Routes>
       </HashRouter>

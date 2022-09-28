@@ -47,7 +47,8 @@ body {
   color: #FE5F55;
 }
 
-.explorer {
+.explorer,
+.settings {
   margin-left: 25%;
   width: 75%;
 }
@@ -170,5 +171,18 @@ body {
 .file__default-position {
   -webkit-transform: translate(0, 0);
           transform: translate(0, 0);
+}
+
+.settings__main-heading {
+  margin-top: 2rem;
+  font-size: 2rem;
+}
+
+.settings__content-wrapper {
+  margin-left: 1rem;
+}
+
+.settings__content-wrapper > section {
+  margin-top: 1rem;
 }
 /*# sourceMappingURL=styles.css.map */

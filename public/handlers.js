@@ -58,7 +58,7 @@ exports.uploadDirectory = async (client, targetPath, dstPath) => {
 
 exports.getDirectory = async (client, targetPath, dstPath) => {
   try {
-    await client.downloadDir(targetPath, dstPath);
+    const res = await client.downloadDir(targetPath, dstPath);
   } catch (err) {
     console.error(err);
   }
