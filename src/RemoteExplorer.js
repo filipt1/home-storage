@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import FilesViewer from "./FilesViewer";
-import { createDirectory, uploadDirectory, uploadFile } from "./ipcController";
+// import { createDirectory, uploadDirectory, uploadFile } from "./ipcController";
 
-const pathModule = window.require("path");
+// const pathModule = window.require("path");
 
-const { ipcRenderer } = window.require("electron");
-const { dialog, app } = window.require("@electron/remote");
+// const { ipcRenderer } = window.require("electron");
+// const { dialog, app } = window.require("@electron/remote");
 
 const formatSize = (size) => {
   var i = Math.floor(Math.log(size) / Math.log(1024));
@@ -25,60 +25,51 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
   const [refreshFiles, setRefreshFiles] = useState(false);
 
   useEffect(() => {
-    ipcRenderer.send("list-files", path);
-    ipcRenderer.on("list-files-reply", (event, res) => {
-      const filesRaw = res.map((file) => {
-        return {
-          name: file.name,
-          directory: file.type === "d",
-        };
-      });
-      setFiles(filesRaw);
-    });
+    // ipcRenderer.send("list-files", path);
+    // ipcRenderer.on("list-files-reply", (event, res) => {
+    //   const filesRaw = res.map((file) => {
+    //     return {
+    //       name: file.name,
+    //       directory: file.type === "d",
+    //     };
+    //   });
+    //   setFiles(filesRaw);
+    // });
 
-    return () => {
-      setFiles([]);
+    // return () => {
+    //   setFiles([]);
+    //   setRefreshFiles(false);
+    //   ipcRenderer.removeAllListeners("list-files-reply");
+    // };
+    async function fetchFiles() {
+      const res = await window.api.listFiles(path);
+
+      const filesRaw = res.map((file) => {
+        return { name: file.name, directory: file.type === "d" };
+      });
+
+      setFiles(filesRaw);
       setRefreshFiles(false);
-      ipcRenderer.removeAllListeners("list-files-reply");
-    };
+    }
+
+    fetchFiles();
   }, [path, refreshFiles]);
 
   const onOpen = (file) => {
     setPath(path + "/" + file);
   };
 
-  const onBack = (e) => {
-    if (e.detail === 2) setPath(pathModule.dirname(path));
+  const onBack = async (e) => {
+    const dirnamePath = await window.api.pathModuleDirname(path);
+    if (e.detail === 2) setPath(dirnamePath);
   };
 
-  const uploadFileDialog = () => {
-    dialog
-      .showOpenDialog({
-        defaultPath: app.getPath("documents"),
-        properties: ["openFile"],
-      })
-      .then((res) => {
-        for (const file of res.filePaths) {
-          uploadFile(pathModule.basename(file), pathModule.dirname(file), path);
-        }
-      });
+  const uploadFileDialog = async () => {
+    await window.api.showUploadFileDialog(path);
   };
 
-  const uploadDirectoryDialog = () => {
-    dialog
-      .showOpenDialog({
-        defaultPath: app.getPath("documents"),
-        properties: ["openDirectory"],
-      })
-      .then((res) => {
-        for (const file of res.filePaths) {
-          uploadDirectory(
-            pathModule.basename(file),
-            pathModule.dirname(file),
-            path
-          );
-        }
-      });
+  const uploadDirectoryDialog = async () => {
+    await window.api.showUploadDirDialog(path);
   };
 
   const createDirectoryInput = () => {
@@ -108,7 +99,8 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
   };
 
   const createNewDir = () => {
-    createDirectory(pathModule.join(path, newDir));
+    window.api.createDirectory(path, newDir);
+
     setRefreshFiles(true);
     setIsCreating(false);
   };

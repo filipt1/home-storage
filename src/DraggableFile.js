@@ -2,21 +2,8 @@ import React, { useState, useRef } from "react";
 import Draggable from "react-draggable";
 
 import { IconFolder, IconFile } from "./Icons";
-import { renamePath } from "./ipcController";
 
-import displayLocalContextMenu from "./menus/LocalContextMenu";
-import displayRemoteContextMenu from "./menus/RemoteContextMenu";
-
-const pathModule = window.require("path");
-
-function DraggableFile({
-  file,
-  homeLocal,
-  homeRemote,
-  path,
-  onOpen,
-  setRefreshFiles,
-}) {
+function DraggableFile({ file, path, onOpen, setRefreshFiles }) {
   const [isDragging, setIsDragging] = useState(false);
   const nodeRef = useRef(null);
 
@@ -27,19 +14,10 @@ function DraggableFile({
 
   const onStop = (e, data) => {
     if (e.target.classList.contains("draggable-dropzone")) {
-      renamePath(
-        path,
-        file.name,
-        pathModule.join(path, e.target.id, file.name)
-      );
+      window.api.moveFile(path, e.target.id, file.name, false);
       setRefreshFiles(true);
     } else if (e.target.classList.contains("draggable-go-back")) {
-      renamePath(
-        path,
-        file.name,
-        pathModule.join(pathModule.dirname(path), file.name)
-      );
-
+      window.api.moveFile(path, null, file.name, true);
       setRefreshFiles(true);
     } else {
       data.node.style.transform = "translate(0,0)";
@@ -63,11 +41,7 @@ function DraggableFile({
           file.directory ? "clickable draggable-dropzone" : ""
         } ${isDragging ? "no-pointer-events" : ""}`}
         id={file.name}
-        onContextMenu={(e) =>
-          homeRemote
-            ? displayLocalContextMenu(e, file, path, homeRemote)
-            : displayRemoteContextMenu(e, file, path, homeLocal)
-        }
+        onContextMenu={() => window.api.showRemoteContextMenu(path, file)}
         onMouseEnter={onDropAreaMouseEnter}
         onMouseLeave={onDropAreaMouseLeave}
       >

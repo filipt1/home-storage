@@ -1,73 +1,73 @@
-import { useState, useMemo } from "react";
+// import { useState, useMemo } from "react";
 
-import FilesViewer from "./FilesViewer";
+// import FilesViewer from "./FilesViewer";
 
-const fs = window.require("fs");
-const pathModule = window.require("path");
+// const fs = window.require("fs");
+// const pathModule = window.require("path");
 
-const { app } = window.require("@electron/remote");
+// const { app } = window.require("@electron/remote");
 
-const formatSize = (size) => {
-  var i = Math.floor(Math.log(size) / Math.log(1024));
-  return (
-    (size / Math.pow(1024, i)).toFixed(2) * 1 +
-    " " +
-    ["B", "kB", "MB", "GB", "TB"][i]
-  );
-};
+// const formatSize = (size) => {
+//   var i = Math.floor(Math.log(size) / Math.log(1024));
+//   return (
+//     (size / Math.pow(1024, i)).toFixed(2) * 1 +
+//     " " +
+//     ["B", "kB", "MB", "GB", "TB"][i]
+//   );
+// };
 
-function LocalExplorer({ homeLocal, homeRemote }) {
-  const [path, setPath] = useState(
-    pathModule.join(app.getPath("home"), homeLocal)
-  );
-  const [searchString, setSearchString] = useState("");
+// function LocalExplorer({ homeLocal, homeRemote }) {
+//   const [path, setPath] = useState(
+//     pathModule.join(app.getPath("home"), homeLocal)
+//   );
+//   const [searchString, setSearchString] = useState("");
 
-  const files = useMemo(
-    () =>
-      fs
-        .readdirSync(path)
-        .map((file) => {
-          const stats = fs.statSync(pathModule.join(path, file));
-          return {
-            name: file,
-            size: stats.isFile() ? formatSize(stats.size ?? 0) : null,
-            directory: stats.isDirectory(),
-          };
-        })
-        .sort((a, b) => {
-          if (a.directory === b.directory) {
-            return a.name.localeCompare(b.name);
-          }
-          return a.directory ? -1 : 1;
-        }),
-    [path]
-  );
+//   const files = useMemo(
+//     () =>
+//       fs
+//         .readdirSync(path)
+//         .map((file) => {
+//           const stats = fs.statSync(pathModule.join(path, file));
+//           return {
+//             name: file,
+//             size: stats.isFile() ? formatSize(stats.size ?? 0) : null,
+//             directory: stats.isDirectory(),
+//           };
+//         })
+//         .sort((a, b) => {
+//           if (a.directory === b.directory) {
+//             return a.name.localeCompare(b.name);
+//           }
+//           return a.directory ? -1 : 1;
+//         }),
+//     [path]
+//   );
 
-  const onBack = () => setPath(pathModule.dirname(path));
-  const onOpen = (folder) => setPath(pathModule.join(path, folder));
+//   const onBack = () => setPath(pathModule.dirname(path));
+//   const onOpen = (folder) => setPath(pathModule.join(path, folder));
 
-  const filteredFiles = files.filter((s) => s.name.includes(searchString));
+//   const filteredFiles = files.filter((s) => s.name.includes(searchString));
 
-  return (
-    <main className="explorer">
-      <h4 className="explorer__path">{path}</h4>
-      <div className="explorer__file-search">
-        <input
-          value={searchString}
-          onChange={(event) => setSearchString(event.target.value)}
-          className="explorer__file-search-input"
-          placeholder="File search"
-        />
-      </div>
-      <FilesViewer
-        files={filteredFiles}
-        onBack={onBack}
-        onOpen={onOpen}
-        homeRemote={homeRemote}
-        path={path}
-      />
-    </main>
-  );
-}
+//   return (
+//     <main className="explorer">
+//       <h4 className="explorer__path">{path}</h4>
+//       <div className="explorer__file-search">
+//         <input
+//           value={searchString}
+//           onChange={(event) => setSearchString(event.target.value)}
+//           className="explorer__file-search-input"
+//           placeholder="File search"
+//         />
+//       </div>
+//       <FilesViewer
+//         files={filteredFiles}
+//         onBack={onBack}
+//         onOpen={onOpen}
+//         homeRemote={homeRemote}
+//         path={path}
+//       />
+//     </main>
+//   );
+// }
 
-export default LocalExplorer;
+// export default LocalExplorer;
