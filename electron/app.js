@@ -3,6 +3,7 @@ const { app, ipcMain, BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 
 const SFTPDriver = require("./sftpDriver");
+const runSetup = require("./scanner");
 
 class App {
   constructor() {
@@ -50,9 +51,10 @@ class App {
     ipcMain.on("create-directory", async (event, currentPath, newDir) => {
       this.sftpDriver.createDirectory(event, currentPath, newDir);
     });
+    ipcMain.handle("run-auto-setup", runSetup);
   }
 
-  async createWindow() {
+  createWindow() {
     const win = new BrowserWindow({
       width: 800,
       height: 600,

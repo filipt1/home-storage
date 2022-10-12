@@ -5,8 +5,9 @@ function LandingPage() {
     console.log("dev");
   };
 
-  const handleHomeSetup = () => {
-    startAutoSetup();
+  const handleHomeSetup = async () => {
+    const res = await window.api.runAutoSetup();
+    console.log(res);
   };
 
   const handleManualSetup = () => {

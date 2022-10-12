@@ -14,6 +14,7 @@ API = {
     ipcRenderer.send("move-file", { currentPath, newDir, file, goBack }),
   createDirectory: (currentPath, newDir) =>
     ipcRenderer.send("create-directory", currentPath, newDir),
+  runAutoSetup: () => ipcRenderer.invoke("run-auto-setup"),
 };
 
 contextBridge.exposeInMainWorld("api", API);
