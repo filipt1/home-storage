@@ -1,3 +1,3 @@
 const App = require("./app");
 
-new App();
+const test = new App();

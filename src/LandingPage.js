@@ -19,10 +19,6 @@ function LandingPage() {
       <h2>LandingPage</h2>
       <div className="landing-page__content-wrapper">
         <div className="landing-page__setup">
-          <label>Run Dev Mode</label>
-          <button onClick={handleDev}>IS_DEV</button>
-        </div>
-        <div className="landing-page__setup">
           <label>Run Home Setup</label>
           <button onClick={handleHomeSetup}>Home Setup</button>
         </div>

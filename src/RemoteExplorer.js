@@ -10,7 +10,7 @@ import FilesViewer from "./FilesViewer";
 //   );
 // };
 
-function RemoteExplorer({ homeLocal, homeRemote }) {
+function RemoteExplorer({ homeRemote }) {
   const [path, setPath] = useState(homeRemote);
   const [searchString, setSearchString] = useState("");
   const [files, setFiles] = useState([]);
@@ -123,7 +123,6 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
         files={filteredFiles}
         onOpen={onOpen}
         onBack={onBack}
-        homeLocal={homeLocal}
         path={path}
         setRefreshFiles={setRefreshFiles}
       />

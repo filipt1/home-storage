@@ -1,15 +1,7 @@
 import DraggableFile from "./DraggableFile";
 import { IconFolderOpen } from "./Icons";
 
-function FilesViewer({
-  files,
-  onBack,
-  onOpen,
-  homeRemote,
-  homeLocal,
-  path,
-  setRefreshFiles,
-}) {
+function FilesViewer({ files, onBack, onOpen, path, setRefreshFiles }) {
   return (
     <div className="files-table">
       <span
@@ -24,8 +16,6 @@ function FilesViewer({
         return (
           <DraggableFile
             file={file}
-            homeLocal={homeLocal}
-            homeRemote={homeRemote}
             path={path}
             onOpen={onOpen}
             key={file.name}
