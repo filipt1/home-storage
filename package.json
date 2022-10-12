@@ -16,7 +16,7 @@
     "ssh2-sftp-client": "^9.0.2",
     "web-vitals": "^0.2.4"
   },
-  "main": "public/main.js",
+  "main": "electron/main.js",
   "homepage": "./",
   "scripts": {
     "start": "react-scripts start",

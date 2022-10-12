@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, HashRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./LandingPage";
 
-import LocalExplorer from "./LocalExplorer";
+// import LocalExplorer from "./LocalExplorer";
 import RemoteExplorer from "./RemoteExplorer";
 import Settings from "./Settings";
 
@@ -24,9 +24,6 @@ function App() {
     // };
     async function start() {
       const res = await window.api.initializeConnection();
-
-      console.log(res);
-
       setHomeLocal(res.homeLocal);
       setHomeRemote(res.homeRemote);
     }
@@ -40,9 +37,6 @@ function App() {
         <nav className="navbar">
           <ul>
             <li>
-              <Link to="/local-explorer">Local explorer</Link>
-            </li>
-            <li>
               <Link to="/remote-explorer">Remote explorer</Link>
             </li>
             <li>
@@ -55,13 +49,6 @@ function App() {
         </nav>
 
         <Routes>
-          <Route
-            exact
-            path="/local-explorer"
-            element={
-              <LocalExplorer homeLocal={homeLocal} homeRemote={homeRemote} />
-            }
-          />
           <Route
             exact
             path="/remote-explorer"

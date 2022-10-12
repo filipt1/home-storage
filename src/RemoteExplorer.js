@@ -7,14 +7,14 @@ import FilesViewer from "./FilesViewer";
 // const { ipcRenderer } = window.require("electron");
 // const { dialog, app } = window.require("@electron/remote");
 
-const formatSize = (size) => {
-  var i = Math.floor(Math.log(size) / Math.log(1024));
-  return (
-    (size / Math.pow(1024, i)).toFixed(2) * 1 +
-    " " +
-    ["B", "kB", "MB", "GB", "TB"][i]
-  );
-};
+// const formatSize = (size) => {
+//   var i = Math.floor(Math.log(size) / Math.log(1024));
+//   return (
+//     (size / Math.pow(1024, i)).toFixed(2) * 1 +
+//     " " +
+//     ["B", "kB", "MB", "GB", "TB"][i]
+//   );
+// };
 
 function RemoteExplorer({ homeLocal, homeRemote }) {
   const [path, setPath] = useState(homeRemote);
