@@ -4,13 +4,16 @@ const { app, dialog } = require("electron");
 const Client = require("ssh2-sftp-client");
 
 const config = require("./config");
-const handlers = require("./handlers/sftp.handlers");
 const remoteMenu = require("./remoteMenu");
 
 class SFTPDriver {
   sshClient = new Client();
   async initializeConnection() {
-    await handlers.connect(this.sshClient, config);
+    try {
+      await this.sshClient.connect(config);
+    } catch (err) {
+      console.error(err);
+    }
 
     return {
       homeLocal: config.homeLocal,
@@ -19,10 +22,14 @@ class SFTPDriver {
   }
 
   async listFiles(event, path) {
-    return await handlers.listFiles(this.sshClient, path);
+    try {
+      return await this.sshClient.list(path);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  async getDirname(event, path) {
+  getDirname(event, path) {
     return pathModule.dirname(path);
   }
 
@@ -33,12 +40,14 @@ class SFTPDriver {
     });
 
     if (canceled) return;
-    else
-      handlers.uploadFile(
-        this.sshClient,
+    try {
+      this.sshClient.put(
         filePaths[0],
         pathModule.join(currentPath, pathModule.basename(filePaths[0]))
       );
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async uploadDirDialog(event, currentPath) {
@@ -48,41 +57,47 @@ class SFTPDriver {
     });
 
     if (canceled) return;
-    else
-      handlers.uploadDirectory(
-        this.sshClient,
+    try {
+      this.sshClient.uploadDir(
         filePaths[0],
         pathModule.join(currentPath, pathModule.basename(filePaths[0]))
       );
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async displayRemoteMenu(event, currentPath, currentFile) {
-    await remoteMenu(event, currentPath, currentFile);
+    try {
+      await remoteMenu(event, currentPath, currentFile, this.sshClient);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async moveFile(event, { currentPath, newDir, file, goBack }) {
-    if (goBack)
-      console.log(pathModule.join(pathModule.dirname(currentPath), file));
-    else console.log(pathModule.join(currentPath, newDir, file));
-    if (goBack)
-      await handlers.rename(
-        this.sshClient,
-        pathModule.join(currentPath, file),
-        pathModule.join(pathModule.dirname(currentPath), file)
-      );
-    else
-      await handlers.rename(
-        this.sshClient,
-        pathModule.join(currentPath, file),
-        pathModule.join(currentPath, newDir, file)
-      );
+    try {
+      if (goBack)
+        await this.sshClient.rename(
+          pathModule.join(currentPath, file),
+          pathModule.join(pathModule.dirname(currentPath), file)
+        );
+      else
+        await this.sshClient.rename(
+          pathModule.join(currentPath, file),
+          pathModule.join(currentPath, newDir, file)
+        );
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async createDirectory(event, currentPath, newDir) {
-    await handlers.createDirectory(
-      this.sshClient,
-      pathModule.join(currentPath, newDir)
-    );
+    try {
+      await this.sshClient.mkdir(pathModule.join(currentPath, newDir));
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 

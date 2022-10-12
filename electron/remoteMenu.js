@@ -2,9 +2,8 @@ const pathModule = require("path");
 const { app, Menu, MenuItem, BrowserWindow } = require("electron");
 
 const config = require("./config");
-const handlers = require("./handlers/sftp.handlers");
 
-async function remoteMenu(event, currentPath, currentFile) {
+async function remoteMenu(event, currentPath, currentFile, sshClient) {
   const mnu = new Menu();
 
   mnu.append(
@@ -12,8 +11,7 @@ async function remoteMenu(event, currentPath, currentFile) {
       label: "Download",
       click() {
         currentFile.directory
-          ? handlers.getDirectory(
-              client,
+          ? sshClient.downloadDir(
               pathModule.join(currentPath, currentFile.name),
               pathModule.join(
                 app.getPath("home"),
@@ -21,8 +19,7 @@ async function remoteMenu(event, currentPath, currentFile) {
                 currentFile.name
               )
             )
-          : handlers.getFile(
-              client,
+          : sshClient.get(
               pathModule.join(currentPath, currentFile.name),
               pathModule.join(
                 app.getPath("home"),
@@ -39,14 +36,8 @@ async function remoteMenu(event, currentPath, currentFile) {
       label: "Delete",
       click() {
         currentFile.directory
-          ? handlers.deleteDirectory(
-              client,
-              pathModule.join(currentPath, currentFile.name)
-            )
-          : handlers.deleteFile(
-              client,
-              pathModule.join(currentPath, currentFile.name)
-            );
+          ? sshClient.rmdir(pathModule.join(currentPath, currentFile.name))
+          : sshClient.delete(pathModule.join(currentPath, currentFile.name));
       },
     })
   );

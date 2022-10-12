@@ -1,5 +1,4 @@
 import React from "react";
-import { startAutoSetup } from "./ipcController";
 
 function LandingPage() {
   const handleDev = () => {

@@ -26,9 +26,9 @@ class App {
     ipcMain.handle("list-files", (event, path) =>
       this.sftpDriver.listFiles(event, path)
     );
-    ipcMain.handle("pathModule-dirname", (event, path) => {
-      this.sftpDriver.getDirname(event, path);
-    });
+    ipcMain.handle("pathModule-dirname", (event, path) =>
+      this.sftpDriver.getDirname(event, path)
+    );
     ipcMain.handle("dialog:upload-file", async (event, currentPath) => {
       this.sftpDriver.uploadFileDialog(event, currentPath);
     });

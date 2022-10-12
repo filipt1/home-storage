@@ -13,15 +13,6 @@ function App() {
   const [homeRemote, setHomeRemote] = useState("");
 
   useEffect(() => {
-    // ipcRenderer.send("initialize-sftp");
-    // ipcRenderer.on("initialize-sftp-reply", (event, res) => {
-    //   setHomeLocal(res.homeLocal);
-    //   setHomeRemote(res.homeRemote);
-    // });
-
-    // return () => {
-    //   ipcRenderer.removeAllListeners("initialize-sftp-reply");
-    // };
     async function start() {
       const res = await window.api.initializeConnection();
       setHomeLocal(res.homeLocal);
@@ -49,6 +40,7 @@ function App() {
         </nav>
 
         <Routes>
+          <Route exact path="/" element={<LandingPage />} />
           <Route
             exact
             path="/remote-explorer"

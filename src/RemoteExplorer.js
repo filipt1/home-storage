@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
 import FilesViewer from "./FilesViewer";
-// import { createDirectory, uploadDirectory, uploadFile } from "./ipcController";
-
-// const pathModule = window.require("path");
-
-// const { ipcRenderer } = window.require("electron");
-// const { dialog, app } = window.require("@electron/remote");
 
 // const formatSize = (size) => {
 //   var i = Math.floor(Math.log(size) / Math.log(1024));
@@ -25,22 +19,6 @@ function RemoteExplorer({ homeLocal, homeRemote }) {
   const [refreshFiles, setRefreshFiles] = useState(false);
 
   useEffect(() => {
-    // ipcRenderer.send("list-files", path);
-    // ipcRenderer.on("list-files-reply", (event, res) => {
-    //   const filesRaw = res.map((file) => {
-    //     return {
-    //       name: file.name,
-    //       directory: file.type === "d",
-    //     };
-    //   });
-    //   setFiles(filesRaw);
-    // });
-
-    // return () => {
-    //   setFiles([]);
-    //   setRefreshFiles(false);
-    //   ipcRenderer.removeAllListeners("list-files-reply");
-    // };
     async function fetchFiles() {
       const res = await window.api.listFiles(path);
 
