@@ -9,6 +9,8 @@ const runSetup = require("./scanner");
 const CONFIG_FILE = "config.json";
 
 class App {
+  CONFIG;
+
   constructor() {
     this.sftpDriver = new SFTPDriver();
     app.on("ready", this.createWindow);
@@ -24,8 +26,14 @@ class App {
   }
 
   initializeIpc() {
+    ipcMain.handle("initialize-app", async () => {
+      const res = await this.readConfig();
+
+      if (res) this.CONFIG = res;
+      return res;
+    });
     ipcMain.handle("initialize-sftp", () =>
-      this.sftpDriver.initializeConnection()
+      this.sftpDriver.initializeConnection(this.CONFIG)
     );
     ipcMain.handle("list-files", (event, path) =>
       this.sftpDriver.listFiles(event, path)
@@ -55,6 +63,12 @@ class App {
       this.sftpDriver.createDirectory(event, currentPath, newDir);
     });
     ipcMain.handle("run-auto-setup", runSetup);
+    ipcMain.on("app:create-config", (event, config) => {
+      let newConfig = config;
+      newConfig.homeLocal = "./Downloads";
+      newConfig.homeRemote = "./";
+      this.writeConfig(config);
+    });
   }
 
   createWindow() {
@@ -87,13 +101,12 @@ class App {
     });
   }
 
-  async writeConfig(config) {
+  writeConfig(config) {
     fs.writeFile(
       pathModule.join("config", CONFIG_FILE),
       JSON.stringify(config),
       (err) => {
         if (err) console.log(err);
-        else console.log("success");
       }
     );
   }

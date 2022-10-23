@@ -3,6 +3,7 @@ const { contextBridge, ipcRenderer } = require("electron");
 API = {
   pathModuleDirname: (path) => ipcRenderer.invoke("pathModule-dirname", path),
   initializeConnection: () => ipcRenderer.invoke("initialize-sftp"),
+  initializeApp: () => ipcRenderer.invoke("initialize-app"),
   listFiles: (path) => ipcRenderer.invoke("list-files", path),
   showUploadFileDialog: (currentPath) =>
     ipcRenderer.invoke("dialog:upload-file", currentPath),
@@ -15,6 +16,7 @@ API = {
   createDirectory: (currentPath, newDir) =>
     ipcRenderer.send("create-directory", currentPath, newDir),
   runAutoSetup: () => ipcRenderer.invoke("run-auto-setup"),
+  createConfig: (config) => ipcRenderer.send("app:create-config", config),
 };
 
 contextBridge.exposeInMainWorld("api", API);

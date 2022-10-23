@@ -2,25 +2,39 @@ import React, { useEffect, useState } from "react";
 import { Link, HashRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./LandingPage";
 
-// import LocalExplorer from "./LocalExplorer";
 import RemoteExplorer from "./RemoteExplorer";
 import Settings from "./Settings";
 
-// const { ipcRenderer } = window.require("electron");
-
 function App() {
+  // pridani initializeApp do dependency array useEffectu a na submit config v landingPage spustit initializeApp
+  const [initApp, setInitApp] = useState(false);
+  const [doSetup, setDoSetup] = useState(false);
+  const [config, setConfig] = useState({});
   const [homeLocal, setHomeLocal] = useState("");
   const [homeRemote, setHomeRemote] = useState("");
 
   useEffect(() => {
     async function start() {
-      const res = await window.api.initializeConnection();
-      setHomeLocal(res.homeLocal);
-      setHomeRemote(res.homeRemote);
+      const res1 = await window.api.initializeApp();
+      let res2;
+
+      if (res1) {
+        res2 = await window.api.initializeConnection();
+        setConfig(res1);
+        setHomeLocal(res2.homeLocal);
+        setHomeRemote(res2.homeRemote);
+      } else {
+        setDoSetup(true);
+      }
     }
 
     start();
-  }, []);
+  }, [initApp]);
+
+  const createConfig = (config) => {
+    window.api.createConfig(config);
+    setInitApp(true);
+  };
 
   return (
     <div className="main-container">
@@ -40,7 +54,17 @@ function App() {
         </nav>
 
         <Routes>
-          <Route exact path="/" element={<LandingPage />} />
+          <Route
+            exact
+            path="/"
+            element={
+              <LandingPage
+                doSetup={doSetup}
+                config={config}
+                createConfig={createConfig}
+              />
+            }
+          />
           <Route
             exact
             path="/remote-explorer"

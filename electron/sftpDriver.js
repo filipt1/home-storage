@@ -3,12 +3,12 @@ const { app, dialog } = require("electron");
 
 const Client = require("ssh2-sftp-client");
 
-const config = require("./config");
 const remoteMenu = require("./remoteMenu");
 
 class SFTPDriver {
   sshClient = new Client();
-  async initializeConnection() {
+
+  async initializeConnection(config) {
     try {
       await this.sshClient.connect(config);
     } catch (err) {
