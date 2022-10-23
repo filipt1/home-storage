@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, HashRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
+import ReactLoading from "react-loading";
+
 import LandingPage from "./LandingPage";
+import LoadingPage from "./LoadingPage";
+import Navbar from "./Navbar";
 
 import RemoteExplorer from "./RemoteExplorer";
 import Settings from "./Settings";
@@ -8,6 +12,7 @@ import Settings from "./Settings";
 function App() {
   const [initApp, setInitApp] = useState(false);
   const [doSetup, setDoSetup] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [config, setConfig] = useState({});
 
   useEffect(() => {
@@ -22,6 +27,7 @@ function App() {
           setDoSetup(false);
         }
       }
+      setLoading(false);
     }
 
     start();
@@ -35,27 +41,22 @@ function App() {
   return (
     <div className="main-container">
       <HashRouter>
-        <nav className="navbar">
-          <ul>
-            <li>
-              <Link to="/remote-explorer">Remote explorer</Link>
-            </li>
-            <li>
-              <Link to="/settings">Settings</Link>
-            </li>
-          </ul>
-        </nav>
+        {!doSetup ? <Navbar /> : ""}
 
         <Routes>
           <Route
             exact
             path="/"
             element={
-              <LandingPage
-                doSetup={doSetup}
-                config={config}
-                createConfig={createConfig}
-              />
+              !loading ? (
+                <LandingPage
+                  doSetup={doSetup}
+                  config={config}
+                  createConfig={createConfig}
+                />
+              ) : (
+                <ReactLoading type="spin" color="#FFF" />
+              )
             }
           />
           <Route

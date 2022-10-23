@@ -43,7 +43,7 @@ class SFTPDriver {
 
     if (canceled) return;
     try {
-      this.sshClient.put(
+      return await this.sshClient.put(
         filePaths[0],
         pathModule.join(currentPath, pathModule.basename(filePaths[0]))
       );
@@ -60,7 +60,7 @@ class SFTPDriver {
 
     if (canceled) return;
     try {
-      this.sshClient.uploadDir(
+      return await this.sshClient.uploadDir(
         filePaths[0],
         pathModule.join(currentPath, pathModule.basename(filePaths[0]))
       );
@@ -69,9 +69,9 @@ class SFTPDriver {
     }
   }
 
-  async displayRemoteMenu(event, currentPath, currentFile) {
+  async displayRemoteMenu(event, currentPath, currentFile, config) {
     try {
-      await remoteMenu(event, currentPath, currentFile, this.sshClient);
+      await remoteMenu(event, currentPath, currentFile, this.sshClient, config);
     } catch (err) {
       console.error(err);
     }

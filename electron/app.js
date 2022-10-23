@@ -1,6 +1,13 @@
 const pathModule = require("path");
 const fs = require("fs");
-const { app, ipcMain, BrowserWindow, dialog } = require("electron");
+
+const {
+  app,
+  ipcMain,
+  BrowserWindow,
+  dialog,
+  Notification,
+} = require("electron");
 const isDev = require("electron-is-dev");
 
 const SFTPDriver = require("./sftpDriver");
@@ -10,6 +17,8 @@ const CONFIG_FILE = "config.json";
 
 class App {
   CONFIG;
+  UPLOAD_TITLE = "Upload completed";
+  UPLOAD_MSG = " has been successfully uploaded!";
 
   constructor() {
     this.sftpDriver = new SFTPDriver();
@@ -42,15 +51,24 @@ class App {
       this.sftpDriver.getDirname(event, path)
     );
     ipcMain.handle("dialog:upload-file", async (event, currentPath) => {
-      this.sftpDriver.uploadFileDialog(event, currentPath);
+      this.sftpDriver
+        .uploadFileDialog(event, currentPath)
+        .then((res) => this.showUploadNotification(res));
     });
     ipcMain.handle("dialog:upload-directory", async (event, currentPath) => {
-      this.sftpDriver.uploadDirDialog(event, currentPath);
+      this.sftpDriver
+        .uploadDirDialog(event, currentPath)
+        .then((res) => this.showUploadNotification(res));
     });
     ipcMain.handle(
       "menu:remote-menu",
       async (event, currentPath, currentFile) => {
-        this.sftpDriver.displayRemoteMenu(event, currentPath, currentFile);
+        this.sftpDriver.displayRemoteMenu(
+          event,
+          currentPath,
+          currentFile,
+          this.CONFIG
+        );
       }
     );
     ipcMain.on(
@@ -121,6 +139,20 @@ class App {
       );
     }
     return res;
+  }
+
+  showTestNotification() {
+    new Notification({
+      title: "test",
+      body: "Hello from test notification",
+    }).show();
+  }
+
+  showUploadNotification(msg) {
+    new Notification({
+      title: this.UPLOAD_TITLE,
+      body: msg,
+    }).show();
   }
 }
 

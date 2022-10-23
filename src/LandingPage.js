@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import SetupForm from "./SetupForm";
+import LoadingPage from "./LoadingPage";
+import ReactLoading from "react-loading";
 
 function LandingPage({ doSetup, config, createConfig }) {
   const [addresses, setAddresses] = useState([]);
   const [manual, setManual] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleHomeSetup = async () => {
+    setLoading(true);
+    if (manual) setManual(false);
     const res = await window.api.runAutoSetup();
     res.unshift("");
     setAddresses(res);
+    setLoading(false);
   };
 
   const handleManualSetup = () => {
@@ -33,7 +39,7 @@ function LandingPage({ doSetup, config, createConfig }) {
         <label>Manual setup</label>
         <button onClick={handleManualSetup}>Manual setup</button>
       </div>
-      {addresses.length || manual ? (
+      {manual || addresses.length ? (
         <SetupForm
           addresses={addresses}
           manualSetup={manual}
@@ -42,6 +48,7 @@ function LandingPage({ doSetup, config, createConfig }) {
       ) : (
         ""
       )}
+      {loading ? <ReactLoading type="spin" color="#FFF" /> : "not loading"}
     </div>
   );
 

@@ -4,7 +4,7 @@ const Socket = net.Socket;
 const PORT = 22;
 const HOST = "127.0.0.1";
 
-const IS_DEV = true;
+const IS_DEV = false;
 
 async function checkAddress(address) {
   const socket = new Socket();
