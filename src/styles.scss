@@ -51,8 +51,7 @@ body {
 }
 
 .explorer,
-.settings,
-.landing-page {
+.settings {
   margin-left: 25%;
   width: 75%;
 }
@@ -166,4 +165,18 @@ body {
 
 .settings__content-wrapper > section {
   margin-top: $sec-margin;
+}
+
+.landing-page {
+  width: 100%;
+}
+
+.landing-page > h2 {
+  margin-left: 25%;
+}
+
+.landing-page__success, 
+.landing-page__content-wrapper {
+  width: 75%;
+  margin-left: 25%;
 }

@@ -46,7 +46,8 @@ async function runSetup() {
     const res = await checkAddress(HOST);
     if (res.status) possibleAddresses.push(HOST);
   } else {
-    for (i = 2; i < 155; i++) {
+    for (i = 1; i < 50; i++) {
+      // zmenit na i = 2
       const currentAddress = `192.168.0.${i}`;
       const res = await checkAddress(currentAddress);
 

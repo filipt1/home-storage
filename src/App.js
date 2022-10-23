@@ -55,7 +55,7 @@ function App() {
                   createConfig={createConfig}
                 />
               ) : (
-                <ReactLoading type="spin" color="#FFF" />
+                <LoadingPage />
               )
             }
           />

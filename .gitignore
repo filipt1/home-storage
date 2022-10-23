@@ -1,3 +1,4 @@
 /node_modules
 /electron/config.js
 /config/config.json
+.eslintcache

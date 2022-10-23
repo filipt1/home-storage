@@ -18,48 +18,54 @@ const CONFIG_FILE = "config.json";
 class App {
   CONFIG;
   UPLOAD_TITLE = "Upload completed";
-  UPLOAD_MSG = " has been successfully uploaded!";
 
   constructor() {
     this.sftpDriver = new SFTPDriver();
+    app.disableHardwareAcceleration();
     app.on("ready", this.createWindow);
-    app.on("window-all-closed", function () {
+    app.on("window-all-closed", () => {
       if (process.platform !== "darwin") {
         app.quit();
       }
     });
-    app.on("activate", function () {
-      if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    app.on("activate", () => {
+      if (BrowserWindow.getAllWindows().length === 0) this.createWindow();
     });
     this.initializeIpc();
   }
 
   initializeIpc() {
-    ipcMain.handle("initialize-app", async () => {
+    ipcMain.handle("app:initialize-app", async () => {
       const res = await this.readConfig();
 
       if (res) this.CONFIG = res;
       return res;
     });
-    ipcMain.handle("initialize-sftp", async () => {
+
+    ipcMain.handle("app:initialize-sftp", async () => {
       return await this.initializeConnection();
     });
+
     ipcMain.handle("list-files", (event, path) =>
       this.sftpDriver.listFiles(event, path)
     );
+
     ipcMain.handle("pathModule-dirname", (event, path) =>
       this.sftpDriver.getDirname(event, path)
     );
+
     ipcMain.handle("dialog:upload-file", async (event, currentPath) => {
       this.sftpDriver
         .uploadFileDialog(event, currentPath)
         .then((res) => this.showUploadNotification(res));
     });
+
     ipcMain.handle("dialog:upload-directory", async (event, currentPath) => {
       this.sftpDriver
         .uploadDirDialog(event, currentPath)
         .then((res) => this.showUploadNotification(res));
     });
+
     ipcMain.handle(
       "menu:remote-menu",
       async (event, currentPath, currentFile) => {
@@ -71,16 +77,20 @@ class App {
         );
       }
     );
+
     ipcMain.on(
       "move-file",
       async (event, { currentPath, newDir, file, goBack }) => {
         this.sftpDriver.moveFile(event, { currentPath, newDir, file, goBack });
       }
     );
+
     ipcMain.on("create-directory", async (event, currentPath, newDir) => {
       this.sftpDriver.createDirectory(event, currentPath, newDir);
     });
-    ipcMain.handle("run-auto-setup", runSetup);
+
+    ipcMain.handle("app:auto-setup", runSetup);
+
     ipcMain.on("app:create-config", (event, config) => {
       let newConfig = config;
       newConfig.homeLocal = config.homeLocal ? config.homeLocal : "./Downloads";
@@ -139,13 +149,6 @@ class App {
       );
     }
     return res;
-  }
-
-  showTestNotification() {
-    new Notification({
-      title: "test",
-      body: "Hello from test notification",
-    }).show();
   }
 
   showUploadNotification(msg) {

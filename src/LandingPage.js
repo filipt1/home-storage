@@ -48,12 +48,11 @@ function LandingPage({ doSetup, config, createConfig }) {
       ) : (
         ""
       )}
-      {loading ? <ReactLoading type="spin" color="#FFF" /> : "not loading"}
     </div>
   );
 
   const successScreen = () => (
-    <div className="landing-page__content-wrapper">
+    <div className="landing-page__success">
       <h3>You've been successfully connected to {config.hostname}</h3>
       <h3>Home directory for your local machine is {config.homeLocal}</h3>
       <h3>Home directory for your cloud storage is {config.homeRemote}</h3>
@@ -65,6 +64,7 @@ function LandingPage({ doSetup, config, createConfig }) {
     <main className="landing-page">
       <h2>LandingPage</h2>
       {doSetup ? setupScreen() : successScreen()}
+      {loading ? <LoadingPage /> : ""}
     </main>
   );
 }
