@@ -3,10 +3,7 @@ import SetupForm from "./SetupForm";
 
 function LandingPage({ doSetup, config, createConfig }) {
   const [addresses, setAddresses] = useState([]);
-
-  const handleDev = () => {
-    console.log("dev");
-  };
+  const [manual, setManual] = useState(false);
 
   const handleHomeSetup = async () => {
     const res = await window.api.runAutoSetup();
@@ -15,7 +12,7 @@ function LandingPage({ doSetup, config, createConfig }) {
   };
 
   const handleManualSetup = () => {
-    console.log("manual setup");
+    setManual((prev) => !prev);
   };
 
   const handleClick = () => {
@@ -36,10 +33,10 @@ function LandingPage({ doSetup, config, createConfig }) {
         <label>Manual setup</label>
         <button onClick={handleManualSetup}>Manual setup</button>
       </div>
-      {addresses.length ? (
+      {addresses.length || manual ? (
         <SetupForm
           addresses={addresses}
-          manualSetup={false}
+          manualSetup={manual}
           createConfig={createConfig}
         />
       ) : (

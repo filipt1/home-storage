@@ -10,15 +10,17 @@ class SFTPDriver {
 
   async initializeConnection(config) {
     try {
+      if (this.sshClient.sftp) await this.sshClient.end();
       await this.sshClient.connect(config);
     } catch (err) {
-      console.error(err);
+      if (err.code === "ERR_BAD_AUTH") return false;
     }
 
-    return {
-      homeLocal: config.homeLocal,
-      homeRemote: config.homeRemote,
-    };
+    return true;
+  }
+
+  async disconnect() {
+    await this.sshClient.end();
   }
 
   async listFiles(event, path) {

@@ -1,6 +1,6 @@
 const pathModule = require("path");
 const fs = require("fs");
-const { app, ipcMain, BrowserWindow } = require("electron");
+const { app, ipcMain, BrowserWindow, dialog } = require("electron");
 const isDev = require("electron-is-dev");
 
 const SFTPDriver = require("./sftpDriver");
@@ -32,9 +32,9 @@ class App {
       if (res) this.CONFIG = res;
       return res;
     });
-    ipcMain.handle("initialize-sftp", () =>
-      this.sftpDriver.initializeConnection(this.CONFIG)
-    );
+    ipcMain.handle("initialize-sftp", async () => {
+      return await this.initializeConnection();
+    });
     ipcMain.handle("list-files", (event, path) =>
       this.sftpDriver.listFiles(event, path)
     );
@@ -65,8 +65,8 @@ class App {
     ipcMain.handle("run-auto-setup", runSetup);
     ipcMain.on("app:create-config", (event, config) => {
       let newConfig = config;
-      newConfig.homeLocal = "./Downloads";
-      newConfig.homeRemote = "./";
+      newConfig.homeLocal = config.homeLocal ? config.homeLocal : "./Downloads";
+      newConfig.homeRemote = config.homeRemote ? config.homeRemote : ".";
       this.writeConfig(config);
     });
   }
@@ -109,6 +109,18 @@ class App {
         if (err) console.log(err);
       }
     );
+  }
+
+  async initializeConnection() {
+    const res = await this.sftpDriver.initializeConnection(this.CONFIG);
+
+    if (!res) {
+      dialog.showErrorBox(
+        "Connection error",
+        "Credentials provided in the config file are not valid! Run setup again!"
+      );
+    }
+    return res;
   }
 }
 

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 
-function Settings() {
-  const [hostname, setHostname] = useState("127.0.0.1");
-  const [port, setPort] = useState("22");
+function Settings({ cfg, createConfig }) {
+  const [config, setConfig] = useState(cfg);
+
+  const handleChange = (e) => {
+    setConfig((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   return (
     <main className="settings">
@@ -15,27 +18,52 @@ function Settings() {
             <input
               name="hostname"
               type="text"
-              onChange={(e) => {
-                setHostname(e.target.value);
-              }}
-              value={hostname}
+              onChange={handleChange}
+              value={config.hostname}
             />
           </div>
           <div className="setting__input">
-            <label htmlFor="port">Port</label>
+            <label htmlFor="port">Username</label>
             <input
-              name="port"
+              name="username"
               type="text"
-              onChange={(e) => {
-                setPort(e.target.value);
-              }}
-              value={port}
+              onChange={handleChange}
+              value={config.username}
+            />
+          </div>
+          <div className="setting__input">
+            <label htmlFor="port">Password</label>
+            <input
+              name="password"
+              type="password"
+              onChange={handleChange}
+              value={config.password}
             />
           </div>
         </section>
         <section className="settings__directories">
           <h3>Home directories</h3>
+          <div className="setting__input">
+            <label htmlFor="port">homeLocal</label>
+            <input
+              name="homeLocal"
+              type="text"
+              onChange={handleChange}
+              value={config.homeLocal}
+            />
+          </div>
+          <div className="setting__input">
+            <label htmlFor="port">homeRemote</label>
+            <input
+              name="homeRemote"
+              type="text"
+              onChange={handleChange}
+              value={config.homeRemote}
+            />
+          </div>
         </section>
+
+        <button onClick={() => createConfig(config)}>Submit</button>
       </div>
     </main>
   );

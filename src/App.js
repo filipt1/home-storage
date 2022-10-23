@@ -6,25 +6,21 @@ import RemoteExplorer from "./RemoteExplorer";
 import Settings from "./Settings";
 
 function App() {
-  // pridani initializeApp do dependency array useEffectu a na submit config v landingPage spustit initializeApp
   const [initApp, setInitApp] = useState(false);
-  const [doSetup, setDoSetup] = useState(false);
+  const [doSetup, setDoSetup] = useState(true);
   const [config, setConfig] = useState({});
-  const [homeLocal, setHomeLocal] = useState("");
-  const [homeRemote, setHomeRemote] = useState("");
 
   useEffect(() => {
     async function start() {
-      const res1 = await window.api.initializeApp();
-      let res2;
+      const res = await window.api.initializeApp();
+      let connected;
 
-      if (res1) {
-        res2 = await window.api.initializeConnection();
-        setConfig(res1);
-        setHomeLocal(res2.homeLocal);
-        setHomeRemote(res2.homeRemote);
-      } else {
-        setDoSetup(true);
+      if (res) {
+        connected = await window.api.initializeConnection();
+        if (connected) {
+          setConfig(res);
+          setDoSetup(false);
+        }
       }
     }
 
@@ -33,7 +29,7 @@ function App() {
 
   const createConfig = (config) => {
     window.api.createConfig(config);
-    setInitApp(true);
+    setInitApp((prev) => !prev);
   };
 
   return (
@@ -46,9 +42,6 @@ function App() {
             </li>
             <li>
               <Link to="/settings">Settings</Link>
-            </li>
-            <li>
-              <Link to="/setup-test">SetupTest</Link>
             </li>
           </ul>
         </nav>
@@ -68,16 +61,13 @@ function App() {
           <Route
             exact
             path="/remote-explorer"
-            element={
-              <RemoteExplorer homeLocal={homeLocal} homeRemote={homeRemote} />
-            }
+            element={<RemoteExplorer config={config} />}
           />
           <Route
             exact
             path="/settings"
-            element={<Settings homeLocal={homeLocal} homeRemote={homeRemote} />}
+            element={<Settings cfg={config} createConfig={createConfig} />}
           />
-          <Route exact path="/setup-test" element={<LandingPage />} />
         </Routes>
       </HashRouter>
     </div>

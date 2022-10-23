@@ -10,8 +10,8 @@ import FilesViewer from "./FilesViewer";
 //   );
 // };
 
-function RemoteExplorer({ homeRemote }) {
-  const [path, setPath] = useState(homeRemote);
+function RemoteExplorer({ config }) {
+  const [path, setPath] = useState(config.homeRemote);
   const [searchString, setSearchString] = useState("");
   const [files, setFiles] = useState([]);
   const [newDir, setNewDir] = useState("");
