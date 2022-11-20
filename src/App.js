@@ -37,7 +37,6 @@ function App() {
   const createConfig = (config) => {
     window.api.createConfig(config);
     setInitApp((prev) => !prev);
-    //
   };
 
   return (
