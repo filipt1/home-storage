@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Container, Stack } from "react-bootstrap";
-// import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { HashRouter, Routes, Route } from "react-router-dom";
 
 import LandingPage from "./LandingPage";
 import LoadingPage from "./LoadingPage";
-import MyNav from "./MyNav";
 
 import RemoteExplorer from "./RemoteExplorer";
 import Settings from "./Settings";
@@ -40,10 +38,8 @@ function App() {
   };
 
   return (
-    <Stack direction="horizontal">
+    <div className="bg-light">
       <HashRouter>
-        {!doSetup ? <MyNav /> : ""}
-
         <Routes>
           <Route
             exact
@@ -72,7 +68,7 @@ function App() {
           />
         </Routes>
       </HashRouter>
-    </Stack>
+    </div>
   );
 }
 

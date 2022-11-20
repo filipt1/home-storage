@@ -1,71 +1,96 @@
 import React, { useState } from "react";
+import MyNav from "./MyNav";
 
 function Settings({ cfg, createConfig }) {
   const [config, setConfig] = useState(cfg);
 
   const handleChange = (e) => {
-    setConfig((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setConfig((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
   return (
-    <main className="settings">
+    <div className="container bg-light">
+      <MyNav active="settings" />
       <div className="settings__content-wrapper">
-        <h2 className="settings__main-heading">Settings</h2>
         <section className="settings__connection">
           <h3>Connection</h3>
-          <div className="setting__input">
-            <label htmlFor="hostname">Hostname</label>
+          <div className="mb-3 setting__input">
+            <label htmlFor="hostname" className="form-label">
+              Hostname
+            </label>
             <input
-              name="hostname"
               type="text"
-              onChange={handleChange}
+              className="form-control"
+              id="hostname"
               value={config.hostname}
+              onChange={handleChange}
             />
           </div>
-          <div className="setting__input">
-            <label htmlFor="port">Username</label>
+          <div className="mb-3 setting__input">
+            <label htmlFor="username" className="form-label">
+              Username
+            </label>
+
             <input
-              name="username"
               type="text"
               onChange={handleChange}
               value={config.username}
+              className="form-control"
+              id="username"
             />
           </div>
-          <div className="setting__input">
-            <label htmlFor="port">Password</label>
+          <div className="mb-3 setting__input">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+
             <input
-              name="password"
               type="password"
               onChange={handleChange}
               value={config.password}
+              className="form-control"
+              id="password"
             />
           </div>
         </section>
         <section className="settings__directories">
           <h3>Home directories</h3>
-          <div className="setting__input">
-            <label htmlFor="port">homeLocal</label>
+          <div className="mb-3 setting__input">
+            <label htmlFor="homeLocal" className="form-label">
+              Local Home Directory
+            </label>
+
             <input
-              name="homeLocal"
               type="text"
               onChange={handleChange}
               value={config.homeLocal}
+              className="form-control"
+              id="homeLocal"
             />
           </div>
-          <div className="setting__input">
-            <label htmlFor="port">homeRemote</label>
+          <div className="mb-3 setting__input">
+            <label htmlFor="homeRemote" className="form-label">
+              Remote Home Directory
+            </label>
+
             <input
-              name="homeRemote"
               type="text"
               onChange={handleChange}
               value={config.homeRemote}
+              className="form-control"
+              id="homeRemote"
             />
           </div>
         </section>
 
-        <button onClick={() => createConfig(config)}>Submit</button>
+        <button
+          className="btn btn-primary mb-3"
+          onClick={() => createConfig(config)}
+        >
+          Submit
+        </button>
       </div>
-    </main>
+    </div>
   );
 }
 

@@ -1,8 +1,6 @@
 import React, { useState, useRef } from "react";
 import Draggable from "react-draggable";
 
-import { IconFolder, IconFile } from "./Icons";
-
 function DraggableFile({ file, path, onOpen, setRefreshFiles }) {
   const [isDragging, setIsDragging] = useState(false);
   const nodeRef = useRef(null);
@@ -35,19 +33,25 @@ function DraggableFile({ file, path, onOpen, setRefreshFiles }) {
 
   return (
     <Draggable onStart={onStart} onStop={onStop} nodeRef={nodeRef}>
-      <div
+      <li
         ref={nodeRef}
         className={`files-table__file-row ${
           file.directory ? "clickable draggable-dropzone" : ""
-        } ${isDragging ? "no-pointer-events" : ""}`}
+        } ${isDragging ? "no-pointer-events" : ""} list-group-item `}
         id={file.name}
         onContextMenu={() => window.api.showRemoteContextMenu(path, file)}
         onMouseEnter={onDropAreaMouseEnter}
         onMouseLeave={onDropAreaMouseLeave}
       >
-        {file.directory ? <IconFolder /> : <IconFile />}
-        {file.name}
-      </div>
+        {file.directory ? (
+          <span className="material-symbols-outlined inline-icon-m">
+            folder
+          </span>
+        ) : (
+          <span className="material-symbols-outlined inline-icon-m">draft</span>
+        )}
+        <span>{file.name}</span>
+      </li>
     </Draggable>
   );
 }

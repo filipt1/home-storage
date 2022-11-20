@@ -8,19 +8,25 @@ function SetupForm({ addresses, manualSetup, createConfig }) {
   });
 
   const handleChange = (e) => {
-    setConfig((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setConfig((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
   const getAddressInput = () => {
     return manualSetup ? (
       <input
-        name="hostname"
         type="text"
-        onChange={handleChange}
+        className="form-control"
+        id="hostname"
         value={config.hostname}
+        onChange={handleChange}
       />
     ) : (
-      <select value={config.hostname} onChange={handleChange} name="hostname">
+      <select
+        value={config.hostname}
+        onChange={handleChange}
+        id="hostname"
+        className="form-select"
+      >
         {addresses.map((el) => {
           return (
             <option value={el} key={el}>
@@ -34,29 +40,45 @@ function SetupForm({ addresses, manualSetup, createConfig }) {
 
   return (
     <div className="landing-page__setup-form">
-      <div className="setting__input">
-        <label htmlFor="hostname">hostname</label>
+      <div className="mb-3 setting__input">
+        <label htmlFor="hostname" className="form-label">
+          Hostname
+        </label>
+
         {getAddressInput()}
       </div>
-      <div className="setting__input">
-        <label htmlFor="username">username</label>
+      <div className="mb-3 setting__input">
+        <label htmlFor="username" className="form-label">
+          Username
+        </label>
+
         <input
-          name="username"
           type="text"
           onChange={handleChange}
           value={config.username}
+          className="form-control"
+          id="username"
         />
       </div>
-      <div className="setting__input">
-        <label htmlFor="password">password</label>
+      <div className="mb-3 setting__input">
+        <label htmlFor="password" className="form-label">
+          Password
+        </label>
+
         <input
-          name="password"
           type="password"
           onChange={handleChange}
           value={config.password}
+          className="form-control"
+          id="password"
         />
       </div>
-      <button onClick={() => createConfig(config)}>Submit</button>
+      <button
+        className="btn btn-primary mb-3"
+        onClick={() => createConfig(config)}
+      >
+        Submit
+      </button>
     </div>
   );
 }

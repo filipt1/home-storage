@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import FilesViewer from "./FilesViewer";
+import MyNav from "./MyNav";
 
 // const formatSize = (size) => {
 //   var i = Math.floor(Math.log(size) / Math.log(1024));
@@ -87,10 +88,11 @@ function RemoteExplorer({ config }) {
   const filteredFiles = files.filter((s) => s.name.includes(searchString));
 
   return (
-    // <Container className="w-75 mt-3">
-    <main className="explorer">
-      <h2 className="explorer__path">{path}</h2>
-      <div className="explorer__action-bar">
+    <div className="container bg-light explorer">
+      <MyNav active="explorer" />
+      {/* <main className="explorer"> */}
+      <h3 className="explorer__path">{path}</h3>
+      <div className="explorer__action-bar mx-auto w-25 d-flex justify-content-around py-2">
         <span
           className="material-symbols-outlined clickable"
           onClick={uploadFileDialog}
@@ -112,11 +114,11 @@ function RemoteExplorer({ config }) {
         {isCreating ? createDirectoryInput() : ""}
       </div>
 
-      <div className="explorer__file-search">
+      <div className="explorer__file-search mx-auto w-50">
         <input
           value={searchString}
           onChange={(e) => setSearchString(e.target.value)}
-          className="explorer__file-search-input"
+          className="explorer__file-search-input form-control"
           placeholder="File search"
         />
       </div>
@@ -128,7 +130,8 @@ function RemoteExplorer({ config }) {
         path={path}
         setRefreshFiles={setRefreshFiles}
       />
-    </main>
+      {/* </main> */}
+    </div>
   );
 }
 

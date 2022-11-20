@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SetupForm from "./SetupForm";
 import LoadingPage from "./LoadingPage";
+import MyNav from "./MyNav";
 
 function LandingPage({ doSetup, config, createConfig }) {
   const [addresses, setAddresses] = useState([]);
@@ -20,23 +21,22 @@ function LandingPage({ doSetup, config, createConfig }) {
     setManual((prev) => !prev);
   };
 
-  const handleClick = () => {
-    console.log("clicked");
-  };
-
   const setupScreen = () => (
-    <div className="landing-page__content-wrapper">
-      <div className="landing-page__setup">
-        <label>Run Home Setup</label>
-        <button onClick={handleHomeSetup}>Home Setup</button>
-      </div>
-      <div className="landing-page__setup">
-        <label>Run</label>
-        <button onClick={handleClick}>TEST</button>
-      </div>
-      <div className="landing-page__setup">
-        <label>Manual setup</label>
-        <button onClick={handleManualSetup}>Manual setup</button>
+    <div className="flex-column landing-page__content-wrapper">
+      <h4 className="mt-5">Disclaimer</h4>
+      <p className="text-center mb-5">
+        In order to continue, you need to have a Unix-based server running
+        either in your home network (then you can use Home Setup with address
+        range 192.168.0.1-254) or elsewhere (then use Manual Setup). You will be
+        prompted to enter username and password
+      </p>
+      <div className="landing-page__setup w-50 mx-auto d-flex justify-content-around align-self-center">
+        <button className="btn btn-primary" onClick={handleHomeSetup}>
+          Run Home Setup
+        </button>
+        <button className="btn btn-primary" onClick={handleManualSetup}>
+          Run Manual Setup
+        </button>
       </div>
       {manual || addresses.length ? (
         <SetupForm
@@ -60,11 +60,12 @@ function LandingPage({ doSetup, config, createConfig }) {
   );
 
   return (
-    <main className="landing-page">
-      <h2>LandingPage</h2>
+    <div className="container landing-page">
+      {!doSetup ? <MyNav /> : ""}
+      <h3 className="pt-3">Home Cloud Storage</h3>
       {doSetup ? setupScreen() : successScreen()}
       {loading ? <LoadingPage /> : ""}
-    </main>
+    </div>
   );
 }
 
