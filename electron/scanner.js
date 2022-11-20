@@ -4,7 +4,7 @@ const Socket = net.Socket;
 const PORT = 22;
 const HOST = "127.0.0.1";
 
-const IS_DEV = false;
+const IS_DEV = true;
 
 async function checkAddress(address) {
   const socket = new Socket();
@@ -46,7 +46,7 @@ async function runSetup() {
     const res = await checkAddress(HOST);
     if (res.status) possibleAddresses.push(HOST);
   } else {
-    for (i = 1; i < 50; i++) {
+    for (i = 1; i < 255; i++) {
       // zmenit na i = 2
       const currentAddress = `192.168.0.${i}`;
       const res = await checkAddress(currentAddress);

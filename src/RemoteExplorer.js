@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Container } from "react-bootstrap";
 import FilesViewer from "./FilesViewer";
 
 // const formatSize = (size) => {
@@ -86,6 +87,7 @@ function RemoteExplorer({ config }) {
   const filteredFiles = files.filter((s) => s.name.includes(searchString));
 
   return (
+    // <Container className="w-75 mt-3">
     <main className="explorer">
       <h2 className="explorer__path">{path}</h2>
       <div className="explorer__action-bar">

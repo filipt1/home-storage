@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import SetupForm from "./SetupForm";
 import LoadingPage from "./LoadingPage";
-import ReactLoading from "react-loading";
 
 function LandingPage({ doSetup, config, createConfig }) {
   const [addresses, setAddresses] = useState([]);

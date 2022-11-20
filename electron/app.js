@@ -8,6 +8,7 @@ const {
   dialog,
   Notification,
 } = require("electron");
+
 const isDev = require("electron-is-dev");
 
 const SFTPDriver = require("./sftpDriver");
@@ -152,6 +153,7 @@ class App {
   }
 
   showUploadNotification(msg) {
+    if (!msg) return;
     new Notification({
       title: this.UPLOAD_TITLE,
       body: msg,

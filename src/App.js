@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Container, Stack } from "react-bootstrap";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import { HashRouter, Routes, Route } from "react-router-dom";
-import ReactLoading from "react-loading";
 
 import LandingPage from "./LandingPage";
 import LoadingPage from "./LoadingPage";
-import Navbar from "./Navbar";
+import MyNav from "./MyNav";
 
 import RemoteExplorer from "./RemoteExplorer";
 import Settings from "./Settings";
@@ -39,9 +40,9 @@ function App() {
   };
 
   return (
-    <div className="main-container">
+    <Stack direction="horizontal">
       <HashRouter>
-        {!doSetup ? <Navbar /> : ""}
+        {!doSetup ? <MyNav /> : ""}
 
         <Routes>
           <Route
@@ -71,7 +72,7 @@ function App() {
           />
         </Routes>
       </HashRouter>
-    </div>
+    </Stack>
   );
 }
 
