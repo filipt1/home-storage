@@ -3,8 +3,14 @@ const { app, Menu, MenuItem, BrowserWindow } = require("electron");
 
 const config = require("./config");
 
-async function remoteMenu(event, currentPath, currentFile, sshClient) {
+async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
   const mnu = new Menu();
+  const fullFilename = pathModule.join(currentPath, currentFile.name);
+  const archiveItemLabel = config.archivedFiles.some(
+    (file) => file.filename === fullFilename
+  )
+    ? "Unarchive"
+    : "Archive";
 
   mnu.append(
     new MenuItem({
@@ -12,7 +18,7 @@ async function remoteMenu(event, currentPath, currentFile, sshClient) {
       click() {
         currentFile.directory
           ? sshClient.downloadDir(
-              pathModule.join(currentPath, currentFile.name),
+              fullFilename,
               pathModule.join(
                 app.getPath("home"),
                 config.homeLocal,
@@ -20,7 +26,7 @@ async function remoteMenu(event, currentPath, currentFile, sshClient) {
               )
             )
           : sshClient.get(
-              pathModule.join(currentPath, currentFile.name),
+              fullFilename,
               pathModule.join(
                 app.getPath("home"),
                 config.homeLocal,
@@ -36,8 +42,28 @@ async function remoteMenu(event, currentPath, currentFile, sshClient) {
       label: "Delete",
       click() {
         currentFile.directory
-          ? sshClient.rmdir(pathModule.join(currentPath, currentFile.name))
-          : sshClient.delete(pathModule.join(currentPath, currentFile.name));
+          ? sshClient.rmdir(fullFilename)
+          : sshClient.delete(fullFilename);
+      },
+    })
+  );
+
+  mnu.append(
+    new MenuItem({
+      label: archiveItemLabel,
+      async click() {
+        if (archiveItemLabel === "Unarchive") {
+          config.archivedFiles = config.archivedFiles.filter(
+            (el) => el.filename !== fullFilename
+          );
+          return;
+        }
+
+        const stats = await sshClient.stat(fullFilename);
+        config.archivedFiles.push({
+          filename: fullFilename,
+          lastModified: stats.modifyTime,
+        });
       },
     })
   );

@@ -22,7 +22,9 @@ class App {
 
   constructor() {
     this.sftpDriver = new SFTPDriver();
+
     app.disableHardwareAcceleration();
+
     app.on("ready", this.createWindow);
     app.on("window-all-closed", () => {
       if (process.platform !== "darwin") {
@@ -32,6 +34,10 @@ class App {
     app.on("activate", () => {
       if (BrowserWindow.getAllWindows().length === 0) this.createWindow();
     });
+    app.on("quit", () => {
+      this.writeConfig(this.CONFIG);
+    });
+
     this.initializeIpc();
   }
 
@@ -96,6 +102,7 @@ class App {
       let newConfig = config;
       newConfig.homeLocal = config.homeLocal ? config.homeLocal : "./Downloads";
       newConfig.homeRemote = config.homeRemote ? config.homeRemote : ".";
+      newConfig.archivedFiles = [];
       this.writeConfig(config);
     });
   }
@@ -148,7 +155,10 @@ class App {
         "Connection error",
         "Credentials provided in the config file are not valid! Run setup again!"
       );
+      return;
     }
+
+    console.log(this.CONFIG);
     return res;
   }
 

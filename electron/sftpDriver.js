@@ -101,6 +101,14 @@ class SFTPDriver {
       console.error(err);
     }
   }
+
+  async getStats(event, path, file) {
+    try {
+      return await this.sshClient.stat(pathModule.join(path, file));
+    } catch (err) {
+      console.error(err);
+    }
+  }
 }
 
 module.exports = SFTPDriver;
