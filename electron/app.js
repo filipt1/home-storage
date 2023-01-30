@@ -13,6 +13,7 @@ const isDev = require("electron-is-dev");
 
 const SFTPDriver = require("./sftpDriver");
 const runSetup = require("./scanner");
+const { initializeArchive } = require("./archive.handler");
 
 const CONFIG_FILE = "config.json";
 
@@ -36,6 +37,9 @@ class App {
     });
     app.on("quit", () => {
       this.writeConfig(this.CONFIG);
+    });
+    app.on("initialize-archive", () => {
+      initializeArchive(this.sftpDriver, this.CONFIG);
     });
 
     this.initializeIpc();
@@ -158,12 +162,13 @@ class App {
       return;
     }
 
-    console.log(this.CONFIG);
+    app.emit("initialize-archive");
     return res;
   }
 
   showUploadNotification(msg) {
     if (!msg) return;
+
     new Notification({
       title: this.UPLOAD_TITLE,
       body: msg,

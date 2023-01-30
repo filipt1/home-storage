@@ -1,5 +1,4 @@
 import React from "react";
-import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 function MyNav({ active }) {
@@ -35,6 +34,14 @@ function MyNav({ active }) {
         }
       >
         Settings
+      </Link>
+      <Link
+        to="/archived-files"
+        className={
+          "nav-link nav-item" + (active === "archived-files" ? " active" : "")
+        }
+      >
+        Archived Files
       </Link>
     </nav>
   );

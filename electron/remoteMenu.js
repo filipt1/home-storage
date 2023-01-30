@@ -1,7 +1,15 @@
 const pathModule = require("path");
 const { app, Menu, MenuItem, BrowserWindow } = require("electron");
+const { unarchiveFile } = require("./archive.handler");
 
-const config = require("./config");
+function getNewFileID(fileArray) {
+  const id = fileArray.reduce(
+    (acc, curr) => (acc < curr.id ? (acc = curr.id) : acc),
+    0
+  );
+
+  return id + 1;
+}
 
 async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
   const mnu = new Menu();
@@ -12,6 +20,7 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
     ? "Unarchive"
     : "Archive";
 
+  console.log(getNewFileID(config.archivedFiles));
   mnu.append(
     new MenuItem({
       label: "Download",
@@ -48,25 +57,29 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
     })
   );
 
-  mnu.append(
-    new MenuItem({
-      label: archiveItemLabel,
-      async click() {
-        if (archiveItemLabel === "Unarchive") {
-          config.archivedFiles = config.archivedFiles.filter(
-            (el) => el.filename !== fullFilename
-          );
-          return;
-        }
+  if (!currentFile.directory) {
+    mnu.append(
+      new MenuItem({
+        label: archiveItemLabel,
+        async click() {
+          if (archiveItemLabel === "Unarchive") {
+            config.archivedFiles = config.archivedFiles.filter(
+              (el) => el.filename !== fullFilename
+            );
+            unarchiveFile(fullFilename);
+            return;
+          }
 
-        const stats = await sshClient.stat(fullFilename);
-        config.archivedFiles.push({
-          filename: fullFilename,
-          lastModified: stats.modifyTime,
-        });
-      },
-    })
-  );
+          const stats = await sshClient.stat(fullFilename);
+          config.archivedFiles.push({
+            id: getNewFileID(config.archivedFiles),
+            filename: fullFilename,
+            lastModified: stats.modifyTime,
+          });
+        },
+      })
+    );
+  }
 
   mnu.popup(BrowserWindow.fromWebContents(event.sender));
 }

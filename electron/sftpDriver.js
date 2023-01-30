@@ -77,6 +77,23 @@ class SFTPDriver {
     }
   }
 
+  async copy(oldPath, newPath) {
+    try {
+      await this.sshClient.rcopy(oldPath, newPath);
+    } catch (err) {
+      if (err.code === "ERR_BAD_PATH") return;
+      console.error(err);
+    }
+  }
+
+  async delete(filepath) {
+    try {
+      await this.sshClient.delete(filepath);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async moveFile(event, { currentPath, newDir, file, goBack }) {
     try {
       if (goBack)

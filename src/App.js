@@ -7,6 +7,8 @@ import LoadingPage from "./LoadingPage";
 
 import RemoteExplorer from "./RemoteExplorer";
 import Settings from "./Settings";
+import ArchivedFiles from "./ArchivedFiles";
+import ArchivedFile from "./ArchivedFile";
 
 function App() {
   const [initApp, setInitApp] = useState(false);
@@ -66,6 +68,13 @@ function App() {
             path="/settings"
             element={<Settings cfg={config} createConfig={createConfig} />}
           />
+          <Route
+            exact
+            path="/archived-files"
+            element={<ArchivedFiles config={config} />}
+          />
+
+          <Route path="/archived-file/:id" element={<ArchivedFile />} />
         </Routes>
       </HashRouter>
     </div>

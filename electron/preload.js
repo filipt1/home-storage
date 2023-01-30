@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
-API = {
+const API = {
   pathModuleDirname: (path) => ipcRenderer.invoke("pathModule-dirname", path),
 
   initializeConnection: () => ipcRenderer.invoke("app:initialize-sftp"),
