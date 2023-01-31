@@ -27,6 +27,13 @@ const API = {
   runAutoSetup: () => ipcRenderer.invoke("app:auto-setup"),
 
   createConfig: (config) => ipcRenderer.send("app:create-config", config),
+
+  getArchivedFile: (fileId) => ipcRenderer.invoke("get-archived-file", fileId),
+
+  showArchiveMenu: (fileId) => ipcRenderer.invoke("menu:archive-menu", fileId),
+
+  showArchivedFileMenu: (fileId, lastModified) =>
+    ipcRenderer.invoke("menu:archived-file-menu", fileId, lastModified),
 };
 
 contextBridge.exposeInMainWorld("api", API);

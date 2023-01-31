@@ -74,7 +74,10 @@ function App() {
             element={<ArchivedFiles config={config} />}
           />
 
-          <Route path="/archived-file/:id" element={<ArchivedFile />} />
+          <Route
+            path="/archived-file/:id"
+            element={<ArchivedFile config={config} />}
+          />
         </Routes>
       </HashRouter>
     </div>

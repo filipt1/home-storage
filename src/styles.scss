@@ -143,11 +143,12 @@ $main-font-size: 1rem;
 
 .no-pointer-events {
   pointer-events: none;
+  z-index: 99;
 }
 
-// .hovered {
-//   background-color: red;
-// }
+.hovered {
+  background-color: red;
+}
 
 // .files-table__file-row {
 //   display: flex;

@@ -14,13 +14,12 @@ function getNewFileID(fileArray) {
 async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
   const mnu = new Menu();
   const fullFilename = pathModule.join(currentPath, currentFile.name);
-  const archiveItemLabel = config.archivedFiles.some(
+  const archived = config.archivedFiles.some(
     (file) => file.filename === fullFilename
-  )
-    ? "Unarchive"
-    : "Archive";
+  );
 
   console.log(getNewFileID(config.archivedFiles));
+  console.log(archived);
   mnu.append(
     new MenuItem({
       label: "Download",
@@ -57,18 +56,19 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
     })
   );
 
-  if (!currentFile.directory) {
+  if (!archived && !currentFile.directory) {
     mnu.append(
       new MenuItem({
-        label: archiveItemLabel,
+        label: "Archive",
         async click() {
-          if (archiveItemLabel === "Unarchive") {
-            config.archivedFiles = config.archivedFiles.filter(
-              (el) => el.filename !== fullFilename
-            );
-            unarchiveFile(fullFilename);
-            return;
-          }
+          // if (archiveItemLabel === "Unarchive") {
+          //   config.archivedFiles = config.archivedFiles.filter(
+          //     (el) => el.filename !== fullFilename
+          //   );
+          //   console.log(currentFile);
+          //   unarchiveFile(fullFilename);
+          //   return;
+          // }
 
           const stats = await sshClient.stat(fullFilename);
           config.archivedFiles.push({

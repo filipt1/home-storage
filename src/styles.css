@@ -17,6 +17,11 @@
 
 .no-pointer-events {
   pointer-events: none;
+  z-index: 99;
+}
+
+.hovered {
+  background-color: red;
 }
 
 .inline-icon-m {

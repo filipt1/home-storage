@@ -13,7 +13,7 @@ const isDev = require("electron-is-dev");
 
 const SFTPDriver = require("./sftpDriver");
 const runSetup = require("./scanner");
-const { initializeArchive } = require("./archive.handler");
+const { initializeArchive, getArchivedFile } = require("./archive.handler");
 
 const CONFIG_FILE = "config.json";
 
@@ -104,10 +104,28 @@ class App {
 
     ipcMain.on("app:create-config", (event, config) => {
       let newConfig = config;
-      newConfig.homeLocal = config.homeLocal ? config.homeLocal : "./Downloads";
-      newConfig.homeRemote = config.homeRemote ? config.homeRemote : ".";
-      newConfig.archivedFiles = [];
+      newConfig.homeLocal = config.homeLocal ?? "/Downloads";
+      newConfig.homeRemote = config.homeRemote ?? "";
+      newConfig.archivedFiles = config.archivedFiles ?? [];
       this.writeConfig(config);
+    });
+
+    ipcMain.handle("get-archived-file", (event, fileId) => {
+      return getArchivedFile(this.sftpDriver, fileId);
+    });
+
+    ipcMain.handle("menu:archive-menu", (event, fileId) =>
+      this.sftpDriver.displayArchiveMenu(event, fileId, this.CONFIG)
+    );
+
+    ipcMain.handle("menu:archived-file-menu", (event, fileId, lastModified) => {
+      this.sftpDriver.displayArchivedFileMenu(
+        event,
+        fileId,
+        lastModified,
+        this.CONFIG
+      );
+      console.log(fileId);
     });
   }
 

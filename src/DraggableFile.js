@@ -25,6 +25,8 @@ function DraggableFile({ file, path, onOpen, setRefreshFiles }) {
 
   const onDropAreaMouseEnter = (e) => {
     if (isDragging) e.target.classList.add("hovered");
+    // console.log(e.target.classList);
+    // console.log("entered");
   };
 
   const onDropAreaMouseLeave = (e) => {

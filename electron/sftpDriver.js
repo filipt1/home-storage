@@ -4,6 +4,8 @@ const { app, dialog } = require("electron");
 const Client = require("ssh2-sftp-client");
 
 const remoteMenu = require("./remoteMenu");
+const archiveMenu = require("./archiveMenu");
+const archivedFileMenu = require("./archivedFileMenu");
 
 class SFTPDriver {
   sshClient = new Client();
@@ -74,6 +76,28 @@ class SFTPDriver {
       await remoteMenu(event, currentPath, currentFile, this.sshClient, config);
     } catch (err) {
       console.error(err);
+    }
+  }
+
+  async displayArchiveMenu(event, fileId, config) {
+    try {
+      await archiveMenu(event, fileId, this.sshClient, config);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async displayArchivedFileMenu(event, fileId, lastModified, config) {
+    try {
+      await archivedFileMenu(
+        event,
+        fileId,
+        lastModified,
+        this.sshClient,
+        config
+      );
+    } catch (err) {
+      console.log(err);
     }
   }
 

@@ -40,14 +40,32 @@ async function archiveFile(sftpDriver, file) {
   );
 }
 
-async function unarchiveFile(sftpDriver, filename) {
+async function unarchiveFile(sshClient, fileId, config) {
+  const archivedFiles = await sshClient.list(ARCHIVE_DIR);
+
+  const toBeUnarchived = archivedFiles.filter(
+    (el) => el.name.split("-")[0] === fileId
+  );
+
+  for (const file of toBeUnarchived) {
+    sshClient.delete(`${ARCHIVE_DIR}/${file.name}`);
+  }
+
+  config.archivedFiles = config.archivedFiles.filter((el) => el.id !== fileId);
+}
+
+async function getArchivedFile(sftpDriver, fileId) {
   const archivedFiles = await sftpDriver.listFiles(null, ARCHIVE_DIR);
 
-  const toBeUnarchived = archivedFiles.filter((el) => el.name === filename);
-  console.log(toBeUnarchived);
+  const filteredFile = archivedFiles.filter(
+    (el) => el.name.split("-")[0] === `${fileId}`
+  );
+
+  return filteredFile.map((el) => el.name);
 }
 
 module.exports = {
   initializeArchive,
   unarchiveFile,
+  getArchivedFile,
 };
