@@ -2,6 +2,7 @@ const pathModule = require("path");
 
 const { app, Menu, MenuItem, BrowserWindow } = require("electron");
 const { showNotification } = require("./notifications");
+const { showConfirmationDialog } = require("./dialogs");
 
 const ARCHIVE_DIR = "cloud-archive";
 
@@ -42,8 +43,15 @@ async function archivedFileMenu(
   mnu.append(
     new MenuItem({
       label: "Delete",
-      click() {
-        sshClient.delete(`${ARCHIVE_DIR}/${fileId}-${lastModified}`);
+      async click() {
+        const YES_BUTTON = 0;
+        const result = await showConfirmationDialog(
+          "Confirm deletion",
+          `Do you really want to delete this version of ${currentFile.filename}`
+        );
+
+        if (result.response === YES_BUTTON)
+          sshClient.delete(`${ARCHIVE_DIR}/${fileId}-${lastModified}`);
       },
     })
   );

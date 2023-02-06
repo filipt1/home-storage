@@ -1,6 +1,7 @@
 const pathModule = require("path");
 const { app, Menu, MenuItem, BrowserWindow } = require("electron");
 const { showNotification } = require("./notifications");
+const { showConfirmationDialog } = require("./dialogs");
 
 const DOWNLOAD_TITLE = "Download complete";
 
@@ -51,10 +52,17 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
   mnu.append(
     new MenuItem({
       label: "Delete",
-      click() {
-        currentFile.directory
-          ? sshClient.rmdir(fullFilename)
-          : sshClient.delete(fullFilename);
+      async click() {
+        const YES_BUTTON = 0;
+        const result = await showConfirmationDialog(
+          "Confirm deletion",
+          `Do you really want to delete ${fullFilename}`
+        );
+
+        if (result.response === YES_BUTTON)
+          currentFile.directory
+            ? sshClient.rmdir(fullFilename)
+            : sshClient.delete(fullFilename);
       },
     })
   );
@@ -64,15 +72,6 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
       new MenuItem({
         label: "Archive",
         async click() {
-          // if (archiveItemLabel === "Unarchive") {
-          //   config.archivedFiles = config.archivedFiles.filter(
-          //     (el) => el.filename !== fullFilename
-          //   );
-          //   console.log(currentFile);
-          //   unarchiveFile(fullFilename);
-          //   return;
-          // }
-
           const stats = await sshClient.stat(fullFilename);
           config.archivedFiles.push({
             id: getNewFileID(config.archivedFiles),

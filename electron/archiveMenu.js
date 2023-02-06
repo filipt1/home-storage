@@ -1,5 +1,6 @@
 const { Menu, MenuItem, BrowserWindow } = require("electron");
 const { unarchiveFile } = require("./archive.handler");
+const { showConfirmationDialog } = require("./dialogs");
 
 const ARCHIVE_DIR = "cloud-archive";
 
@@ -7,16 +8,24 @@ async function archiveMenu(event, fileId, sshClient, config) {
   const mnu = new Menu();
   const currentFile = config.archivedFiles.find((el) => el.id == fileId);
 
-  mnu.append(
-    new MenuItem({
-      label: "Delete",
-      click() {
-        sshClient.delete(
-          `${ARCHIVE_DIR}/${fileId}-${currentFile.lastModified}`
-        );
-      },
-    })
-  );
+  // mnu.append(
+  //   new MenuItem({
+  //     label: "Delete",
+  //     async click() {
+  //       const YES_BUTTON = 0;
+
+  //       const result = await showConfirmationDialog(
+  //         "Confirm deletion",
+  //         `Do you really want to delete all versions of ${currentFile.filename}`
+  //       );
+
+  //       if (result.response === YES_BUTTON)
+  //         sshClient.delete(
+  //           `${ARCHIVE_DIR}/${fileId}-${currentFile.lastModified}`
+  //         );
+  //     },
+  //   })
+  // );
 
   mnu.append(
     new MenuItem({

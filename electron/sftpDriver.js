@@ -73,14 +73,7 @@ class SFTPDriver {
 
   async displayRemoteMenu(event, currentPath, currentFile, config) {
     try {
-      const x = await remoteMenu(
-        event,
-        currentPath,
-        currentFile,
-        this.sshClient,
-        config
-      );
-      console.log(x);
+      remoteMenu(event, currentPath, currentFile, this.sshClient, config);
     } catch (err) {
       console.error(err);
     }
