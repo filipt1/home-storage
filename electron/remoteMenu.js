@@ -53,16 +53,19 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
     new MenuItem({
       label: "Delete",
       async click() {
-        const YES_BUTTON = 0;
+        const NO_BUTTON = 1;
         const result = await showConfirmationDialog(
           "Confirm deletion",
           `Do you really want to delete ${fullFilename}`
         );
 
-        if (result.response === YES_BUTTON)
-          currentFile.directory
-            ? sshClient.rmdir(fullFilename)
-            : sshClient.delete(fullFilename);
+        if (result.response === NO_BUTTON) return;
+
+        currentFile.directory
+          ? sshClient.rmdir(fullFilename)
+          : sshClient.delete(fullFilename);
+
+        app.emit("refresh-listed-files");
       },
     })
   );

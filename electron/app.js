@@ -1,6 +1,12 @@
 const pathModule = require("path");
 
-const { app, ipcMain, BrowserWindow, dialog } = require("electron");
+const {
+  app,
+  ipcMain,
+  BrowserWindow,
+  dialog,
+  MouseInputEvent,
+} = require("electron");
 
 const isDev = require("electron-is-dev");
 
@@ -74,7 +80,7 @@ class App {
     ipcMain.handle(
       "menu:remote-menu",
       async (event, currentPath, currentFile) => {
-        this.sftpDriver.displayRemoteMenu(
+        return await this.sftpDriver.displayRemoteMenu(
           event,
           currentPath,
           currentFile,
@@ -116,7 +122,6 @@ class App {
         lastModified,
         this.CONFIG
       );
-      console.log(fileId);
     });
   }
 

@@ -74,6 +74,10 @@ class SFTPDriver {
   async displayRemoteMenu(event, currentPath, currentFile, config) {
     try {
       remoteMenu(event, currentPath, currentFile, this.sshClient, config);
+
+      return new Promise(function (resolve) {
+        app.once("refresh-listed-files", () => resolve(true));
+      });
     } catch (err) {
       console.error(err);
     }

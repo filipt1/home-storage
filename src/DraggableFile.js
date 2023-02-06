@@ -33,6 +33,14 @@ function DraggableFile({ file, path, onOpen, setRefreshFiles }) {
     e.target.classList.remove("hovered");
   };
 
+  const onContextMenu = async (e) => {
+    const x = await window.api.showRemoteContextMenu(path, file);
+
+    if (x) {
+      setRefreshFiles(true);
+    }
+  };
+
   return (
     <Draggable onStart={onStart} onStop={onStop} nodeRef={nodeRef}>
       <li
@@ -41,7 +49,7 @@ function DraggableFile({ file, path, onOpen, setRefreshFiles }) {
           file.directory ? "clickable draggable-dropzone" : ""
         } ${isDragging ? "no-pointer-events" : ""} list-group-item `}
         id={file.name}
-        onContextMenu={() => window.api.showRemoteContextMenu(path, file)}
+        onContextMenu={onContextMenu}
         onMouseEnter={onDropAreaMouseEnter}
         onMouseLeave={onDropAreaMouseLeave}
       >
