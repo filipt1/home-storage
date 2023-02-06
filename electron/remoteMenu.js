@@ -1,6 +1,8 @@
 const pathModule = require("path");
 const { app, Menu, MenuItem, BrowserWindow } = require("electron");
-const { unarchiveFile } = require("./archive.handler");
+const { showNotification } = require("./notifications");
+
+const DOWNLOAD_TITLE = "Download complete";
 
 function getNewFileID(fileArray) {
   const id = fileArray.reduce(
@@ -18,29 +20,30 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
     (file) => file.filename === fullFilename
   );
 
-  console.log(getNewFileID(config.archivedFiles));
-  console.log(archived);
   mnu.append(
     new MenuItem({
       label: "Download",
-      click() {
+      async click() {
+        let downloadResponse;
         currentFile.directory
-          ? sshClient.downloadDir(
+          ? (downloadResponse = await sshClient.downloadDir(
               fullFilename,
               pathModule.join(
                 app.getPath("home"),
                 config.homeLocal,
                 currentFile.name
               )
-            )
-          : sshClient.get(
+            ))
+          : (downloadResponse = await sshClient.get(
               fullFilename,
               pathModule.join(
                 app.getPath("home"),
                 config.homeLocal,
                 currentFile.name
               )
-            );
+            ));
+
+        showNotification(DOWNLOAD_TITLE, downloadResponse);
       },
     })
   );

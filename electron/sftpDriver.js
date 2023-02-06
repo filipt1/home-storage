@@ -73,7 +73,14 @@ class SFTPDriver {
 
   async displayRemoteMenu(event, currentPath, currentFile, config) {
     try {
-      await remoteMenu(event, currentPath, currentFile, this.sshClient, config);
+      const x = await remoteMenu(
+        event,
+        currentPath,
+        currentFile,
+        this.sshClient,
+        config
+      );
+      console.log(x);
     } catch (err) {
       console.error(err);
     }
@@ -119,15 +126,16 @@ class SFTPDriver {
   }
 
   async moveFile(event, { currentPath, newDir, file, goBack }) {
+    const fullFilepath = pathModule.join(currentPath, file);
     try {
       if (goBack)
         await this.sshClient.rename(
-          pathModule.join(currentPath, file),
+          fullFilepath,
           pathModule.join(pathModule.dirname(currentPath), file)
         );
       else
         await this.sshClient.rename(
-          pathModule.join(currentPath, file),
+          fullFilepath,
           pathModule.join(currentPath, newDir, file)
         );
     } catch (err) {

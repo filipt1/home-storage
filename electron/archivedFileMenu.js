@@ -1,6 +1,7 @@
 const pathModule = require("path");
 
 const { app, Menu, MenuItem, BrowserWindow } = require("electron");
+const { showNotification } = require("./notifications");
 
 const ARCHIVE_DIR = "cloud-archive";
 
@@ -18,13 +19,13 @@ async function archivedFileMenu(
     `${fileId}-${lastModified}`
   );
 
-  console.log(lastModified);
-
   mnu.append(
     new MenuItem({
       label: "Download",
-      click() {
-        sshClient.get(
+      async click() {
+        let downloadResponse;
+
+        downloadResponse = await sshClient.get(
           fullFilename,
           pathModule.join(
             app.getPath("home"),
@@ -32,6 +33,8 @@ async function archivedFileMenu(
             pathModule.basename(currentFile.filename)
           )
         );
+
+        showNotification("Download completed", downloadResponse);
       },
     })
   );
