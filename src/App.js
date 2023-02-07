@@ -9,6 +9,7 @@ import RemoteExplorer from "./RemoteExplorer";
 import Settings from "./Settings";
 import ArchivedFiles from "./ArchivedFiles";
 import ArchivedFile from "./ArchivedFile";
+import LockedFiles from "./LockedFiles";
 
 function App() {
   const [initApp, setInitApp] = useState(false);
@@ -77,6 +78,10 @@ function App() {
           <Route
             path="/archived-file/:id"
             element={<ArchivedFile config={config} />}
+          />
+          <Route
+            path="/locked-files"
+            element={<LockedFiles config={config} />}
           />
         </Routes>
       </HashRouter>

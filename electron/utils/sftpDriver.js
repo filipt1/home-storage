@@ -6,6 +6,7 @@ const Client = require("ssh2-sftp-client");
 const remoteMenu = require("../menus/remoteMenu");
 const archiveMenu = require("../menus/archiveMenu");
 const archivedFileMenu = require("../menus/archivedFileMenu");
+const lockedFileMenu = require("../menus/lockedFileMenu");
 
 class SFTPDriver {
   sshClient = new Client();
@@ -102,6 +103,14 @@ class SFTPDriver {
       );
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  async displayLockedFileMenu(event, filename, config) {
+    try {
+      await lockedFileMenu(event, filename, this.sshClient, config);
+    } catch (err) {
+      console.error(err);
     }
   }
 

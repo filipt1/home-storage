@@ -7,17 +7,17 @@ const isDev = require("electron-is-dev");
 const SFTPDriver = require("./utils/sftpDriver");
 const runSetup = require("./utils/scanner");
 
+const { readConfig, writeConfig } = require("./handlers/config.handler");
+const { isLocked, verifyPassword } = require("./handlers/encryption.handler");
 const {
   initializeArchive,
   getArchivedFile,
 } = require("./handlers/archive.handler");
-const { readConfig, writeConfig } = require("./handlers/config.handler");
-const { isLocked, verifyPassword } = require("./handlers/encryption.handler");
 
 const { showNotification } = require("./interaction/notifications");
 const { showErrorDialog, showDisclaimer } = require("./interaction/dialogs");
 
-const { ARCHIVE_DIR } = require("./constants");
+const { ARCHIVE_DIR, LOCKED_OPERATIONS_MSG } = require("./constants");
 
 const UPLOAD_TITLE = "Upload completed";
 
@@ -92,9 +92,17 @@ class App {
       }
     );
 
-    ipcMain.on("move-file", async (event, operationParams) => {
-      this.sftpDriver.moveFile(event, operationParams);
-    });
+    ipcMain.on(
+      "move-file",
+      async (event, { currentPath, newDir, file, goBack }) => {
+        if (isLocked(currentPath, file, this.CONFIG)) {
+          showDisclaimer(LOCKED_OPERATIONS_MSG);
+          return;
+        }
+
+        this.sftpDriver.moveFile(event, { currentPath, newDir, file, goBack });
+      }
+    );
 
     ipcMain.on("create-directory", async (event, currentPath, newDir) => {
       this.sftpDriver.createDirectory(event, currentPath, newDir);
@@ -115,7 +123,7 @@ class App {
       }
 
       newConfig.homeLocal = config.homeLocal ?? "/Downloads";
-      newConfig.homeRemote = config.homeRemote ?? "./";
+      newConfig.homeRemote = config.homeRemote ?? ".";
       newConfig.archivedFiles = config.archivedFiles ?? [];
       newConfig.lockedFiles = config.lockedFiles ?? [];
 
@@ -157,6 +165,10 @@ class App {
       if (!isValid) showErrorDialog(ERROR_TITLE, ERROR_MSG);
 
       return isValid;
+    });
+
+    ipcMain.handle("menu:locked-file-menu", (event, filename) => {
+      this.sftpDriver.displayLockedFileMenu(event, filename, this.CONFIG);
     });
   }
 

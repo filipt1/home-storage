@@ -40,6 +40,9 @@ const API = {
 
   verifyPassword: (password) =>
     ipcRenderer.invoke("encryption:verify-password", password),
+
+  showLockedFileMenu: (filename) =>
+    ipcRenderer.invoke("menu:locked-file-menu", filename),
 };
 
 contextBridge.exposeInMainWorld("api", API);

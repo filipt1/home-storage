@@ -7,8 +7,8 @@ const {
   showConfirmationDialog,
   showDisclaimer,
 } = require("../interaction/dialogs");
-
-const DOWNLOAD_TITLE = "Download complete";
+const { isLocked } = require("../handlers/encryption.handler");
+const { LOCKED_OPERATIONS_MSG, DOWNLOAD_TITLE } = require("../constants");
 
 function getNewFileID(fileArray) {
   const id = fileArray.reduce(
@@ -25,13 +25,19 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
   const archived = config.archivedFiles.some(
     (file) => file.filename === fullFilename
   );
-  const isLocked = config.lockedFiles.includes(fullFilename);
+  const fileIsLocked = config.lockedFiles.includes(fullFilename);
 
   mnu.append(
     new MenuItem({
       label: "Download",
       async click() {
         let downloadResponse;
+
+        if (isLocked(currentPath, currentFile.name, config)) {
+          showDisclaimer(LOCKED_OPERATIONS_MSG);
+          return;
+        }
+
         currentFile.directory
           ? (downloadResponse = await sshClient.downloadDir(
               fullFilename,
@@ -67,6 +73,11 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
 
         if (result.response === NO_BUTTON) return;
 
+        if (isLocked(currentPath, currentFile.name, config)) {
+          showDisclaimer(LOCKED_OPERATIONS_MSG);
+          return;
+        }
+
         currentFile.directory
           ? sshClient.rmdir(fullFilename)
           : sshClient.delete(fullFilename);
@@ -100,7 +111,7 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
   mnu.append(
     new MenuItem({
       label: "Lock",
-      enabled: !isLocked,
+      enabled: !fileIsLocked,
       click() {
         config.lockedFiles.push(fullFilename);
       },
