@@ -3,7 +3,7 @@ const pathModule = require("path");
 const { app, Menu, MenuItem, BrowserWindow } = require("electron");
 
 const { showNotification } = require("./notifications");
-const { showConfirmationDialog } = require("./dialogs");
+const { showConfirmationDialog, showDisclaimer } = require("./dialogs");
 
 const DOWNLOAD_TITLE = "Download complete";
 
@@ -22,6 +22,7 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
   const archived = config.archivedFiles.some(
     (file) => file.filename === fullFilename
   );
+  const isLocked = config.lockedFiles.includes(fullFilename);
 
   mnu.append(
     new MenuItem({
@@ -78,16 +79,30 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
         label: "Archive",
         enabled: !archived,
         async click() {
+          const DISCLAIMER_MSG = "Changes will be applied after app restart.";
           const stats = await sshClient.stat(fullFilename);
+
           config.archivedFiles.push({
             id: getNewFileID(config.archivedFiles),
             filename: fullFilename,
             lastModified: stats.modifyTime,
           });
+
+          showDisclaimer(DISCLAIMER_MSG);
         },
       })
     );
   }
+
+  mnu.append(
+    new MenuItem({
+      label: "Lock",
+      enabled: !isLocked,
+      click() {
+        config.lockedFiles.push(fullFilename);
+      },
+    })
+  );
 
   mnu.popup(BrowserWindow.fromWebContents(event.sender));
 }

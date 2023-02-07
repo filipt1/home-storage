@@ -1,9 +1,8 @@
 import DraggableFile from "./DraggableFile";
-import { IconFolderOpen } from "./Icons";
 
 function FilesViewer({ files, onBack, onOpen, path, setRefreshFiles }) {
   return (
-    <ul className="list-group my-3 files-table">
+    <ul className="list-group my-3 files-table z-0">
       <li
         className="clickable files-table__back-btn draggable-go-back list-group-item"
         onClick={onBack}

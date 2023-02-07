@@ -3,8 +3,7 @@ const pathModule = require("path");
 const { app, Menu, MenuItem, BrowserWindow } = require("electron");
 const { showNotification } = require("./notifications");
 const { showConfirmationDialog } = require("./dialogs");
-
-const ARCHIVE_DIR = "cloud-archive";
+const { ARCHIVE_DIR } = require("./constants");
 
 async function archivedFileMenu(
   event,

@@ -3,12 +3,16 @@ import DirectoryInput from "./DirectoryInput";
 
 import FilesViewer from "./FilesViewer";
 import MyNav from "./MyNav";
+import PasswordPrompt from "./PasswordPrompt";
 
 function RemoteExplorer({ config }) {
   const [path, setPath] = useState(config.homeRemote);
   const [searchString, setSearchString] = useState("");
   const [files, setFiles] = useState([]);
+
   const [isCreating, setIsCreating] = useState(false);
+  const [passwordPrompt, setPasswordPrompt] = useState(false);
+  const [lockedFile, setLockedFile] = useState("");
   const [refreshFiles, setRefreshFiles] = useState(false);
 
   useEffect(() => {
@@ -27,7 +31,13 @@ function RemoteExplorer({ config }) {
     fetchFiles();
   }, [path, refreshFiles]);
 
-  const onOpen = (file) => {
+  const onOpen = async (file) => {
+    if (await window.api.isLocked(path, file)) {
+      setLockedFile(file);
+      setPasswordPrompt(true);
+      return;
+    }
+
     setPath(`${path}/${file}`);
   };
 
@@ -83,6 +93,16 @@ function RemoteExplorer({ config }) {
           <DirectoryInput
             setIsCreating={setIsCreating}
             createNewDir={createNewDir}
+          />
+        ) : (
+          ""
+        )}
+        {passwordPrompt ? (
+          <PasswordPrompt
+            setPasswordPrompt={setPasswordPrompt}
+            lockedFile={lockedFile}
+            path={path}
+            setPath={setPath}
           />
         ) : (
           ""

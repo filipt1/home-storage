@@ -1,6 +1,6 @@
 const pathModule = require("path");
 
-const { app, ipcMain, BrowserWindow, dialog } = require("electron");
+const { app, ipcMain, BrowserWindow } = require("electron");
 
 const isDev = require("electron-is-dev");
 
@@ -9,6 +9,9 @@ const runSetup = require("./scanner");
 const { initializeArchive, getArchivedFile } = require("./archive.handler");
 const { showNotification } = require("./notifications");
 const { readConfig, writeConfig } = require("./config.handler");
+const { showErrorDialog, showDisclaimer } = require("./dialogs");
+const { ARCHIVE_DIR } = require("./constants");
+const { isLocked, verifyPassword } = require("./encryption.handler");
 
 const UPLOAD_TITLE = "Upload completed";
 
@@ -94,10 +97,22 @@ class App {
     ipcMain.handle("app:auto-setup", runSetup);
 
     ipcMain.on("app:create-config", (event, config) => {
+      const ERROR_TITLE = "Invalid input";
+      const ERROR_MSG =
+        "This directory name is restricted from use, because it is used for archive!";
+
       let newConfig = config;
+
+      if (config.homeRemote === ARCHIVE_DIR) {
+        showErrorDialog(ERROR_TITLE, ERROR_MSG);
+        return;
+      }
+
       newConfig.homeLocal = config.homeLocal ?? "/Downloads";
-      newConfig.homeRemote = config.homeRemote ?? "";
+      newConfig.homeRemote = config.homeRemote ?? "./";
       newConfig.archivedFiles = config.archivedFiles ?? [];
+      newConfig.lockedFiles = config.lockedFiles ?? [];
+
       writeConfig(config);
     });
 
@@ -116,6 +131,26 @@ class App {
         lastModified,
         this.CONFIG
       );
+    });
+
+    ipcMain.handle("encryption:is-locked", (event, path, filename) => {
+      const DISCLAIMER_MSG =
+        "This file is locked, to enable operations with this file enter password.";
+      const fileIsLocked = isLocked(path, filename, this.CONFIG);
+
+      if (fileIsLocked) showDisclaimer(DISCLAIMER_MSG);
+
+      return fileIsLocked;
+    });
+
+    ipcMain.handle("encryption:verify-password", (event, password) => {
+      const ERROR_TITLE = "Invalid input";
+      const ERROR_MSG = "The password is incorrect!";
+      const isValid = verifyPassword(password, this.CONFIG);
+
+      if (!isValid) showErrorDialog(ERROR_TITLE, ERROR_MSG);
+
+      return isValid;
     });
   }
 
@@ -140,16 +175,17 @@ class App {
 
   async initializeConnection() {
     const res = await this.sftpDriver.initializeConnection(this.CONFIG);
+    const ERROR_TITLE = "Connection error";
+    const ERROR_MSG =
+      "Credentials provided in the config file are not valid! Run setup again!";
 
     if (!res) {
-      dialog.showErrorBox(
-        "Connection error",
-        "Credentials provided in the config file are not valid! Run setup again!"
-      );
+      showErrorDialog(ERROR_TITLE, ERROR_MSG);
       return;
     }
 
     app.emit("initialize-archive");
+
     return res;
   }
 }

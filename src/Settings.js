@@ -11,7 +11,7 @@ function Settings({ cfg, createConfig }) {
   return (
     <div className="container bg-light w-75">
       <MyNav active="settings" />
-      <div className="settings__content-wrapper">
+      <div className="settings__content-wrapper w-50 mx-auto">
         <section className="settings__connection">
           <h3>Connection</h3>
           <div className="mb-3 setting__input">

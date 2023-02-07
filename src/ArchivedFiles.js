@@ -7,9 +7,15 @@ function ArchivedFiles({ config }) {
     <div className="container bg-light w-75">
       <MyNav active="archived-files" />
       <ul className="list-group my-3">
-        {config.archivedFiles.map((file) => (
-          <ArchivedFileLink key={file.id} file={file} />
-        ))}
+        {config.archivedFiles.length ? (
+          config.archivedFiles.map((file) => (
+            <ArchivedFileLink key={file.id} file={file} />
+          ))
+        ) : (
+          <li className="list-group-item">
+            No files have been archived so far
+          </li>
+        )}
       </ul>
     </div>
   );

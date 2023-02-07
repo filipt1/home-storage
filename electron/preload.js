@@ -34,6 +34,12 @@ const API = {
 
   showArchivedFileMenu: (fileId, lastModified) =>
     ipcRenderer.invoke("menu:archived-file-menu", fileId, lastModified),
+
+  isLocked: (path, filename) =>
+    ipcRenderer.invoke("encryption:is-locked", path, filename),
+
+  verifyPassword: (password) =>
+    ipcRenderer.invoke("encryption:verify-password", password),
 };
 
 contextBridge.exposeInMainWorld("api", API);
