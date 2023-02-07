@@ -1,12 +1,6 @@
 const pathModule = require("path");
 
-const {
-  app,
-  ipcMain,
-  BrowserWindow,
-  dialog,
-  MouseInputEvent,
-} = require("electron");
+const { app, ipcMain, BrowserWindow, dialog } = require("electron");
 
 const isDev = require("electron-is-dev");
 

@@ -9,7 +9,7 @@ const IS_DEV = true;
 async function checkAddress(address) {
   const socket = new Socket();
 
-  return new Promise(function (resolve, reject) {
+  return new Promise(function (resolve) {
     let error = null;
     let status = null;
     let connectionRefused = false;

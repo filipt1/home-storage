@@ -1,11 +1,12 @@
 const fs = require("fs");
 const pathModule = require("path");
 
+const CONFIG_DIR = "config";
 const CONFIG_FILE = "config.json";
 
 async function readConfig() {
-  return new Promise(function (resolve, reject) {
-    fs.readFile(pathModule.join("config", CONFIG_FILE), (err, data) => {
+  return new Promise(function (resolve) {
+    fs.readFile(pathModule.join(CONFIG_DIR, CONFIG_FILE), (err, data) => {
       let jsonData;
       if (err) resolve(false);
       if (data) jsonData = JSON.parse(data);
@@ -16,7 +17,7 @@ async function readConfig() {
 
 function writeConfig(config) {
   fs.writeFile(
-    pathModule.join("config", CONFIG_FILE),
+    pathModule.join(CONFIG_DIR, CONFIG_FILE),
     JSON.stringify(config),
     (err) => {
       if (err) console.log(err);

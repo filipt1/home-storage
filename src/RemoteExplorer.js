@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
 import FilesViewer from "./FilesViewer";
 import MyNav from "./MyNav";
-
-// const formatSize = (size) => {
-//   var i = Math.floor(Math.log(size) / Math.log(1024));
-//   return (
-//     (size / Math.pow(1024, i)).toFixed(2) * 1 +
-//     " " +
-//     ["B", "kB", "MB", "GB", "TB"][i]
-//   );
-// };
 
 function RemoteExplorer({ config }) {
   const [path, setPath] = useState(config.homeRemote);
@@ -85,7 +75,9 @@ function RemoteExplorer({ config }) {
     setIsCreating(false);
   };
 
-  const filteredFiles = files.filter((s) => s.name.includes(searchString));
+  const filteredFiles = files.filter((s) =>
+    s.name.toLowerCase().includes(searchString.toLowerCase())
+  );
 
   return (
     <div className="container bg-light explorer">
