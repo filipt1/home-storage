@@ -21,10 +21,11 @@ function ArchivedFile({ config }) {
     getArchivedFile();
   }, [id]);
 
-  const FILENAME = config.archivedFiles.find((el) => (el.id = id)).filename;
+  const FILENAME = config.archivedFiles.find((el) => el.id === parseInt(id))
+    .filename;
 
   return (
-    <div className="container bg-light">
+    <div className="container bg-light w-75">
       <MyNav />
       <ul className="list-group my-3">
         {versions.map((file) => (

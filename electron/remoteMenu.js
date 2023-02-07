@@ -1,5 +1,7 @@
 const pathModule = require("path");
+
 const { app, Menu, MenuItem, BrowserWindow } = require("electron");
+
 const { showNotification } = require("./notifications");
 const { showConfirmationDialog } = require("./dialogs");
 
@@ -70,10 +72,11 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
     })
   );
 
-  if (!archived && !currentFile.directory) {
+  if (!currentFile.directory) {
     mnu.append(
       new MenuItem({
         label: "Archive",
+        enabled: !archived,
         async click() {
           const stats = await sshClient.stat(fullFilename);
           config.archivedFiles.push({

@@ -9,7 +9,7 @@ function Settings({ cfg, createConfig }) {
   };
 
   return (
-    <div className="container bg-light">
+    <div className="container bg-light w-75">
       <MyNav active="settings" />
       <div className="settings__content-wrapper">
         <section className="settings__connection">
