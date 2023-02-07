@@ -2,8 +2,11 @@ const pathModule = require("path");
 
 const { app, Menu, MenuItem, BrowserWindow } = require("electron");
 
-const { showNotification } = require("./notifications");
-const { showConfirmationDialog, showDisclaimer } = require("./dialogs");
+const { showNotification } = require("../interaction/notifications");
+const {
+  showConfirmationDialog,
+  showDisclaimer,
+} = require("../interaction/dialogs");
 
 const DOWNLOAD_TITLE = "Download complete";
 

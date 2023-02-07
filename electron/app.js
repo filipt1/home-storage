@@ -4,14 +4,20 @@ const { app, ipcMain, BrowserWindow } = require("electron");
 
 const isDev = require("electron-is-dev");
 
-const SFTPDriver = require("./sftpDriver");
-const runSetup = require("./scanner");
-const { initializeArchive, getArchivedFile } = require("./archive.handler");
-const { showNotification } = require("./notifications");
-const { readConfig, writeConfig } = require("./config.handler");
-const { showErrorDialog, showDisclaimer } = require("./dialogs");
+const SFTPDriver = require("./utils/sftpDriver");
+const runSetup = require("./utils/scanner");
+
+const {
+  initializeArchive,
+  getArchivedFile,
+} = require("./handlers/archive.handler");
+const { readConfig, writeConfig } = require("./handlers/config.handler");
+const { isLocked, verifyPassword } = require("./handlers/encryption.handler");
+
+const { showNotification } = require("./interaction/notifications");
+const { showErrorDialog, showDisclaimer } = require("./interaction/dialogs");
+
 const { ARCHIVE_DIR } = require("./constants");
-const { isLocked, verifyPassword } = require("./encryption.handler");
 
 const UPLOAD_TITLE = "Upload completed";
 

@@ -1,7 +1,7 @@
 const fs = require("fs");
 const pathModule = require("path");
 
-const { CONFIG_DIR, CONFIG_FILE } = require("./constants");
+const { CONFIG_DIR, CONFIG_FILE } = require("../constants");
 
 async function readConfig() {
   return new Promise(function (resolve) {

@@ -1,6 +1,6 @@
 const { Menu, MenuItem, BrowserWindow } = require("electron");
-const { unarchiveFile } = require("./archive.handler");
-const { showConfirmationDialog } = require("./dialogs");
+const { unarchiveFile } = require("../handlers/archive.handler");
+const { showConfirmationDialog } = require("../interaction/dialogs");
 
 const ARCHIVE_DIR = "cloud-archive";
 

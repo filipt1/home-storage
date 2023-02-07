@@ -1,9 +1,9 @@
 const pathModule = require("path");
 
 const { app, Menu, MenuItem, BrowserWindow } = require("electron");
-const { showNotification } = require("./notifications");
-const { showConfirmationDialog } = require("./dialogs");
-const { ARCHIVE_DIR } = require("./constants");
+const { showNotification } = require("../interaction/notifications");
+const { showConfirmationDialog } = require("../interaction/dialogs");
+const { ARCHIVE_DIR } = require("../constants");
 
 async function archivedFileMenu(
   event,

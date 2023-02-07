@@ -1,4 +1,4 @@
-const { ARCHIVE_DIR } = require("./constants");
+const { ARCHIVE_DIR } = require("../constants");
 
 async function initializeArchive(sftpDriver, config) {
   sftpDriver.createDirectory(null, "", ARCHIVE_DIR);

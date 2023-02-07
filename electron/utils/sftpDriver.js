@@ -3,9 +3,9 @@ const { app, dialog } = require("electron");
 
 const Client = require("ssh2-sftp-client");
 
-const remoteMenu = require("./remoteMenu");
-const archiveMenu = require("./archiveMenu");
-const archivedFileMenu = require("./archivedFileMenu");
+const remoteMenu = require("../menus/remoteMenu");
+const archiveMenu = require("../menus/archiveMenu");
+const archivedFileMenu = require("../menus/archivedFileMenu");
 
 class SFTPDriver {
   sshClient = new Client();
