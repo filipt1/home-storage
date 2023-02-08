@@ -11,10 +11,15 @@ const lockedFileMenu = require("../menus/lockedFileMenu");
 class SFTPDriver {
   sshClient = new Client();
 
-  async initializeConnection(config) {
+  async initializeConnection(config, plainPassword) {
     try {
       if (this.sshClient.sftp) await this.sshClient.end();
-      await this.sshClient.connect(config);
+
+      const modifiedConfig = { ...config };
+
+      modifiedConfig.password = plainPassword;
+
+      await this.sshClient.connect(modifiedConfig);
     } catch (err) {
       if (err.code === "ERR_BAD_AUTH") return false;
     }

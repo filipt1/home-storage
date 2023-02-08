@@ -26,7 +26,7 @@ const API = {
 
   runAutoSetup: () => ipcRenderer.invoke("app:auto-setup"),
 
-  createConfig: (config) => ipcRenderer.send("app:create-config", config),
+  createConfig: (config) => ipcRenderer.invoke("app:create-config", config),
 
   getArchivedFile: (fileId) => ipcRenderer.invoke("get-archived-file", fileId),
 

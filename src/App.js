@@ -15,19 +15,16 @@ function App() {
   const [initApp, setInitApp] = useState(false);
   const [doSetup, setDoSetup] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [initConnection, setInitConnection] = useState(false);
   const [config, setConfig] = useState({});
 
   useEffect(() => {
     async function start() {
       const res = await window.api.initializeApp();
-      let connected;
 
       if (res) {
-        connected = await window.api.initializeConnection();
-        if (connected) {
-          setConfig(res);
-          setDoSetup(false);
-        }
+        setConfig(res);
+        setDoSetup(false);
       }
       setLoading(false);
     }
@@ -35,9 +32,20 @@ function App() {
     start();
   }, [initApp]);
 
-  const createConfig = (config) => {
-    window.api.createConfig(config);
-    setInitApp((prev) => !prev);
+  useEffect(() => {
+    async function init() {
+      const connected = await window.api.initializeConnection();
+      if (connected) setInitConnection(false);
+    }
+
+    if (!initConnection) return;
+
+    init();
+  }, [initConnection]);
+
+  const createConfig = async (config) => {
+    const res = await window.api.createConfig(config);
+    if (res) setInitApp((prev) => !prev);
   };
 
   return (
@@ -53,6 +61,7 @@ function App() {
                   doSetup={doSetup}
                   config={config}
                   createConfig={createConfig}
+                  setInitConnection={setInitConnection}
                 />
               ) : (
                 <LoadingPage />

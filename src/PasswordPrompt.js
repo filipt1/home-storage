@@ -6,8 +6,8 @@ function PasswordPrompt({ setPasswordPrompt, path, setPath, lockedFile }) {
   const verifyPassword = async () => {
     const isValid = await window.api.verifyPassword(password);
 
-    if (isValid) setPath(`${path}/${lockedFile}`);
-    setPasswordPrompt(false);
+    if (isValid && setPath) setPath(`${path}/${lockedFile}`);
+    if (isValid) setPasswordPrompt(false);
   };
 
   return (

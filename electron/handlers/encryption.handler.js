@@ -1,11 +1,16 @@
 const pathModule = require("path");
+const bcrypt = require("bcryptjs");
 
 function isLocked(path, filename, config) {
   return config.lockedFiles.includes(pathModule.join(path, filename));
 }
 
-function verifyPassword(password, config) {
-  return config.password === password;
+async function verifyPassword(password, config) {
+  return await bcrypt.compare(password, config.password);
 }
 
-module.exports = { isLocked, verifyPassword };
+async function encryptPassword(plainPassword) {
+  return await bcrypt.hash(plainPassword, 10);
+}
+
+module.exports = { isLocked, verifyPassword, encryptPassword };

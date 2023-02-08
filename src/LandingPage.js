@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SetupForm from "./SetupForm";
 import LoadingPage from "./LoadingPage";
 import MyNav from "./MyNav";
+import PasswordVerificationInput from "./PasswordVerificationInput";
 
-function LandingPage({ doSetup, config, createConfig }) {
+function LandingPage({ doSetup, createConfig, setInitConnection }) {
   const [addresses, setAddresses] = useState([]);
   const [manual, setManual] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [authorized, setAuthorized] = useState(false);
+
+  useEffect(() => {
+    authorized && setInitConnection(true);
+  }, [authorized, setInitConnection]);
 
   const handleHomeSetup = async () => {
     setLoading(true);
@@ -23,7 +29,7 @@ function LandingPage({ doSetup, config, createConfig }) {
 
   const setupScreen = () => (
     <div className="flex-column landing-page__content-wrapper">
-      <h4 className="mt-5">Disclaimer</h4>
+      <h4 className="pt-5">Disclaimer</h4>
       <p className="text-center mb-5">
         In order to continue, you need to have a Unix-based server running
         either in your home network (then you can use Home Setup with address
@@ -52,17 +58,18 @@ function LandingPage({ doSetup, config, createConfig }) {
 
   const successScreen = () => (
     <div className="landing-page__success">
-      <h3>You've been successfully connected to {config.hostname}</h3>
-      <h3>Home directory for your local machine is {config.homeLocal}</h3>
-      <h3>Home directory for your cloud storage is {config.homeRemote}</h3>
-      <h3>Change this anytime in the Setting section</h3>
+      {authorized && <MyNav />}
+      {!authorized && (
+        <PasswordVerificationInput
+          setResult={setAuthorized}
+          headingMsg={"Enter password to access files"}
+        />
+      )}
     </div>
   );
 
   return (
-    <div className="container landing-page">
-      {!doSetup ? <MyNav /> : ""}
-      <h3 className="pt-3">Home Cloud Storage</h3>
+    <div className="container landing-page w-75">
       {doSetup ? setupScreen() : successScreen()}
       {loading ? <LoadingPage /> : ""}
     </div>

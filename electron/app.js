@@ -8,7 +8,11 @@ const SFTPDriver = require("./utils/sftpDriver");
 const runSetup = require("./utils/scanner");
 
 const { readConfig, writeConfig } = require("./handlers/config.handler");
-const { isLocked, verifyPassword } = require("./handlers/encryption.handler");
+const {
+  isLocked,
+  verifyPassword,
+  encryptPassword,
+} = require("./handlers/encryption.handler");
 const {
   initializeArchive,
   getArchivedFile,
@@ -18,11 +22,12 @@ const { showNotification } = require("./interaction/notifications");
 const { showErrorDialog, showDisclaimer } = require("./interaction/dialogs");
 
 const { ARCHIVE_DIR, LOCKED_OPERATIONS_MSG } = require("./constants");
+const createApplicationMenu = require("./menus/applicationMenu");
 
 const UPLOAD_TITLE = "Upload completed";
 
 class App {
-  CONFIG;
+  CONFIG = {};
 
   constructor() {
     this.sftpDriver = new SFTPDriver();
@@ -30,6 +35,8 @@ class App {
     app.disableHardwareAcceleration();
 
     app.on("ready", this.createWindow);
+
+    app.on("ready", createApplicationMenu);
     app.on("window-all-closed", () => {
       if (process.platform !== "darwin") {
         app.quit();
@@ -110,24 +117,27 @@ class App {
 
     ipcMain.handle("app:auto-setup", runSetup);
 
-    ipcMain.on("app:create-config", (event, config) => {
+    ipcMain.handle("app:create-config", async (event, config) => {
       const ERROR_TITLE = "Invalid input";
       const ERROR_MSG =
         "This directory name is restricted from use, because it is used for archive!";
 
-      let newConfig = config;
+      let newConfig = { ...config };
 
       if (config.homeRemote === ARCHIVE_DIR) {
         showErrorDialog(ERROR_TITLE, ERROR_MSG);
         return;
       }
 
+      newConfig.password =
+        this.CONFIG.password ?? (await encryptPassword(config.password));
       newConfig.homeLocal = config.homeLocal ?? "/Downloads";
       newConfig.homeRemote = config.homeRemote ?? ".";
       newConfig.archivedFiles = config.archivedFiles ?? [];
       newConfig.lockedFiles = config.lockedFiles ?? [];
+      this.plainPassword = this.plainPassword ?? config.password;
 
-      writeConfig(config);
+      return await writeConfig(newConfig);
     });
 
     ipcMain.handle("get-archived-file", (event, fileId) => {
@@ -163,6 +173,7 @@ class App {
       const isValid = verifyPassword(password, this.CONFIG);
 
       if (!isValid) showErrorDialog(ERROR_TITLE, ERROR_MSG);
+      if (isValid) this.plainPassword = password;
 
       return isValid;
     });
@@ -192,7 +203,10 @@ class App {
   }
 
   async initializeConnection() {
-    const res = await this.sftpDriver.initializeConnection(this.CONFIG);
+    const res = await this.sftpDriver.initializeConnection(
+      this.CONFIG,
+      this.plainPassword
+    );
     const ERROR_TITLE = "Connection error";
     const ERROR_MSG =
       "Credentials provided in the config file are not valid! Run setup again!";
