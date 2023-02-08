@@ -167,10 +167,10 @@ class App {
       return fileIsLocked;
     });
 
-    ipcMain.handle("encryption:verify-password", (event, password) => {
+    ipcMain.handle("encryption:verify-password", async (event, password) => {
       const ERROR_TITLE = "Invalid input";
       const ERROR_MSG = "The password is incorrect!";
-      const isValid = verifyPassword(password, this.CONFIG);
+      const isValid = await verifyPassword(password, this.CONFIG);
 
       if (!isValid) showErrorDialog(ERROR_TITLE, ERROR_MSG);
       if (isValid) this.plainPassword = password;

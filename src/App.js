@@ -61,6 +61,7 @@ function App() {
                   doSetup={doSetup}
                   config={config}
                   createConfig={createConfig}
+                  initConnection={initConnection}
                   setInitConnection={setInitConnection}
                 />
               ) : (
