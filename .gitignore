@@ -1,4 +1,5 @@
 /node_modules
 /electron/config.js
 /config/config.json
-.eslintcache
+/.eslintcache
+/.DS_Store

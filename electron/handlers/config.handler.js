@@ -1,11 +1,19 @@
 const fs = require("fs");
 const pathModule = require("path");
 
+const { app } = require("electron");
+
 const { CONFIG_DIR, CONFIG_FILE } = require("../constants");
+
+const CONFIG_PATH = pathModule.join(
+  app.getPath("userData"),
+  CONFIG_DIR,
+  CONFIG_FILE
+);
 
 async function readConfig() {
   return new Promise(function (resolve) {
-    fs.readFile(pathModule.join(CONFIG_DIR, CONFIG_FILE), (err, data) => {
+    fs.readFile(CONFIG_PATH, (err, data) => {
       let jsonData;
 
       if (err) {
@@ -21,21 +29,17 @@ async function readConfig() {
 
 async function writeConfig(config) {
   return new Promise(function (resolve) {
-    fs.mkdir(CONFIG_DIR, () => {
-      fs.writeFile(
-        pathModule.join(CONFIG_DIR, CONFIG_FILE),
-        JSON.stringify(config),
-        (err) => {
-          if (err) resolve(false);
-          resolve(true);
-        }
-      );
+    fs.mkdir(pathModule.join(app.getPath("userData"), CONFIG_DIR), () => {
+      fs.writeFile(CONFIG_PATH, JSON.stringify(config), (err) => {
+        if (err) resolve(false);
+        resolve(true);
+      });
     });
   });
 }
 
 function deleteConfig() {
-  fs.unlink(pathModule.join(CONFIG_DIR, CONFIG_FILE), (err) => {
+  fs.unlink(CONFIG_PATH, (err) => {
     if (err) console.error(err);
   });
 }

@@ -18,6 +18,7 @@ async function createApplicationMenu() {
           enabled: (await readConfig()) ? true : false,
           async click(menuItem, browserWindow) {
             deleteConfig();
+            // fix pro build
             await browserWindow.loadURL("http://localhost:3000");
           },
         },

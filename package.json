@@ -32,7 +32,6 @@
     "electron:start": "wait-on tcp:3000 && electron ."
   },
   "build": {
-    "extends": null,
     "appId": "com.example.electron-cra",
     "files": [
       "dist/**/*",
