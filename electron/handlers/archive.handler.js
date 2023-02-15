@@ -19,6 +19,16 @@ async function initializeArchive(sftpDriver, config) {
   }
 }
 
+async function archiveActivated(sshClient) {
+  try {
+    await sshClient.stat(ARCHIVE_DIR);
+    return true;
+  } catch (err) {
+    if (err.code === "ENOENT") return false;
+    console.log(err);
+  }
+}
+
 async function saveModifiedFiles(sftpDriver, config) {
   for (const file of config.archivedFiles) {
     const lastModified = await checkFileModification(sftpDriver, file);
@@ -76,4 +86,5 @@ module.exports = {
   initializeArchive,
   unarchiveFile,
   getArchivedFile,
+  archiveActivated,
 };

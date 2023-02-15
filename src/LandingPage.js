@@ -62,7 +62,7 @@ function LandingPage({ doSetup, createConfig, setInitConnection }) {
       {!authorized && (
         <PasswordVerificationInput
           setResult={setAuthorized}
-          headingMsg={"Enter password to access files"}
+          headingMsg={"Enter password for confirmation"}
         />
       )}
     </div>

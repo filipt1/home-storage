@@ -115,7 +115,11 @@ class App {
     );
 
     ipcMain.on("create-directory", async (event, currentPath, newDir) => {
-      this.sftpDriver.createDirectory(event, currentPath, newDir);
+      try {
+        this.sftpDriver.createDirectory(event, currentPath, newDir);
+      } catch (err) {
+        console.log(err);
+      }
     });
 
     ipcMain.handle("app:auto-setup", runSetup);

@@ -9,6 +9,7 @@ const {
 } = require("../interaction/dialogs");
 const { isLocked } = require("../handlers/encryption.handler");
 const { LOCKED_OPERATIONS_MSG, DOWNLOAD_TITLE } = require("../constants");
+const { archiveActivated } = require("../handlers/archive.handler");
 
 function getNewFileID(fileArray) {
   const id = fileArray.reduce(
@@ -26,6 +27,7 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
     (file) => file.filename === fullFilename
   );
   const fileIsLocked = config.lockedFiles.includes(fullFilename);
+  const isArchiveActivated = await archiveActivated(sshClient);
 
   mnu.append(
     new MenuItem({
@@ -91,10 +93,11 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
     mnu.append(
       new MenuItem({
         label: "Archive",
-        enabled: !archived,
+        enabled: !archived && isArchiveActivated,
         async click() {
           const DISCLAIMER_MSG = "Changes will be applied after app restart.";
           const stats = await sshClient.stat(fullFilename);
+          archiveActivated(sshClient);
 
           config.archivedFiles.push({
             id: getNewFileID(config.archivedFiles),
