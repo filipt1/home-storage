@@ -29,7 +29,10 @@ async function readConfig() {
 
 async function writeConfig(config) {
   return new Promise(function (resolve) {
-    fs.mkdir(pathModule.join(app.getPath("userData"), CONFIG_DIR), () => {
+    const test = pathModule.normalize(
+      pathModule.join(app.getPath("userData"), CONFIG_DIR)
+    );
+    fs.mkdir(test, () => {
       fs.writeFile(CONFIG_PATH, JSON.stringify(config), (err) => {
         if (err) resolve(false);
         resolve(true);
@@ -39,6 +42,7 @@ async function writeConfig(config) {
 }
 
 function deleteConfig() {
+  console.log(CONFIG_PATH);
   fs.unlink(CONFIG_PATH, (err) => {
     if (err) console.error(err);
   });

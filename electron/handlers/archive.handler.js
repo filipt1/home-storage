@@ -1,7 +1,15 @@
 const { ARCHIVE_DIR } = require("../constants");
+const { showErrorDialog } = require("../interaction/dialogs");
 
 async function initializeArchive(sftpDriver, config) {
-  sftpDriver.createDirectory(null, "", ARCHIVE_DIR);
+  const ERROR_TITLE = "Permission error";
+  const ERROR_MSG = "Cannot create a directory for archive!";
+  try {
+    await sftpDriver.createDirectory(null, "", ARCHIVE_DIR);
+  } catch (err) {
+    showErrorDialog(ERROR_TITLE, ERROR_MSG);
+    return;
+  }
   const files = await sftpDriver.listFiles(null, ARCHIVE_DIR);
 
   if (files.length) saveModifiedFiles(sftpDriver, config);

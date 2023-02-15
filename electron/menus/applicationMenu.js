@@ -1,4 +1,4 @@
-const { Menu } = require("electron");
+const { Menu, app } = require("electron");
 const { deleteConfig, readConfig } = require("../handlers/config.handler");
 
 async function createApplicationMenu() {
@@ -18,6 +18,7 @@ async function createApplicationMenu() {
           enabled: (await readConfig()) ? true : false,
           async click(menuItem, browserWindow) {
             deleteConfig();
+            app.emit("app:delete-config");
             // fix pro build
             await browserWindow.loadURL("http://localhost:3000");
           },

@@ -158,7 +158,7 @@ class SFTPDriver {
     try {
       await this.sshClient.mkdir(pathModule.join(currentPath, newDir));
     } catch (err) {
-      console.error(err);
+      throw err;
     }
   }
 

@@ -51,6 +51,9 @@ class App {
     app.on("initialize-archive", () => {
       initializeArchive(this.sftpDriver, this.CONFIG);
     });
+    app.on("app:delete-config", () => {
+      this.CONFIG = {};
+    });
 
     this.initializeIpc();
   }
