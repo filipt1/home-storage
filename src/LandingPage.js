@@ -36,7 +36,7 @@ function LandingPage({ doSetup, createConfig, setInitConnection }) {
         range 192.168.0.1-254) or elsewhere (then use Manual Setup). You will be
         prompted to enter username and password
       </p>
-      <div className="landing-page__setup w-50 mx-auto d-flex justify-content-around align-self-center">
+      <div className="landing-page__setup d-flex justify-content-around mb-5">
         <button className="btn btn-primary" onClick={handleHomeSetup}>
           Run Home Setup
         </button>

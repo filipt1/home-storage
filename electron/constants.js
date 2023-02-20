@@ -1,3 +1,6 @@
+const WINDOW_WIDTH = 800;
+const WINDOW_HEIGHT = 600;
+
 const ARCHIVE_DIR = "cloud-archive";
 
 const DOWNLOAD_TITLE = "Download complete";
@@ -14,4 +17,6 @@ module.exports = {
   CONFIG_FILE,
   LOCKED_OPERATIONS_MSG,
   DOWNLOAD_TITLE,
+  WINDOW_HEIGHT,
+  WINDOW_WIDTH,
 };

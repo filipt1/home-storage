@@ -21,7 +21,12 @@ const {
 const { showNotification } = require("./interaction/notifications");
 const { showErrorDialog, showDisclaimer } = require("./interaction/dialogs");
 
-const { ARCHIVE_DIR, LOCKED_OPERATIONS_MSG } = require("./constants");
+const {
+  ARCHIVE_DIR,
+  LOCKED_OPERATIONS_MSG,
+  WINDOW_WIDTH,
+  WINDOW_HEIGHT,
+} = require("./constants");
 const createApplicationMenu = require("./menus/applicationMenu");
 
 const UPLOAD_TITLE = "Upload completed";
@@ -192,8 +197,8 @@ class App {
 
   createWindow() {
     const win = new BrowserWindow({
-      width: 800,
-      height: 600,
+      width: WINDOW_WIDTH,
+      height: WINDOW_HEIGHT,
       webPreferences: {
         contextIsolation: true,
         preload: pathModule.join(__dirname, "preload.js"),
