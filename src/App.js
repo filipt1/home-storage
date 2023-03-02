@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { HashRouter, Routes, Route } from "react-router-dom";
 
-import LandingPage from "./LandingPage";
-import LoadingPage from "./LoadingPage";
+import LandingPage from "./landing-page/LandingPage";
+import LoadingPage from "./utils/LoadingPage";
 
-import RemoteExplorer from "./RemoteExplorer";
-import Settings from "./Settings";
-import ArchivedFiles from "./ArchivedFiles";
-import ArchivedFile from "./ArchivedFile";
-import LockedFiles from "./LockedFiles";
+import RemoteExplorer from "./explorer/RemoteExplorer";
+import Settings from "./settings/Settings";
+import ArchivedFiles from "./archive/ArchivedFiles";
+import ArchivedFile from "./archive/ArchivedFile";
+import LockedFiles from "./locked-files/LockedFiles";
 
 function App() {
   const [initApp, setInitApp] = useState(false);

@@ -1,6 +1,6 @@
 import React from "react";
 import ArchivedFileLink from "./ArchivedFileLink";
-import MyNav from "./MyNav";
+import MyNav from "../utils/MyNav";
 
 function ArchivedFiles({ config }) {
   return (

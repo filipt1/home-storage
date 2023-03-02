@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import Draggable from "react-draggable";
+import { IconFile, IconFolder } from "../utils/Icons";
 
 function DraggableFile({ file, path, onOpen, setRefreshFiles }) {
   const [isDragging, setIsDragging] = useState(false);
@@ -53,13 +54,7 @@ function DraggableFile({ file, path, onOpen, setRefreshFiles }) {
         onMouseEnter={onDropAreaMouseEnter}
         onMouseLeave={onDropAreaMouseLeave}
       >
-        {file.directory ? (
-          <span className="material-symbols-outlined inline-icon-m">
-            folder
-          </span>
-        ) : (
-          <span className="material-symbols-outlined inline-icon-m">draft</span>
-        )}
+        {file.directory ? <IconFolder /> : <IconFile />}
         <span>{file.name}</span>
       </li>
     </Draggable>

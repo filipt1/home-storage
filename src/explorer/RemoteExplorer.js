@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import DirectoryInput from "./DirectoryInput";
+import DirectoryInput from "../utils/DirectoryInput";
 
 import FilesViewer from "./FilesViewer";
-import MyNav from "./MyNav";
-import PasswordPrompt from "./PasswordPrompt";
+import MyNav from "../utils/MyNav";
+import PasswordPrompt from "../utils/PasswordPrompt";
 
 function RemoteExplorer({ config }) {
   const [path, setPath] = useState(config.homeRemote);

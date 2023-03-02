@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import MyNav from "./MyNav";
-import PasswordVerificationInput from "./PasswordVerificationInput";
+import MyNav from "../utils/MyNav";
+import PasswordVerificationInput from "../utils/PasswordVerificationInput";
 
 function LockedFiles({ config }) {
   const [authorized, setAuthorized] = useState(false);
@@ -8,7 +8,9 @@ function LockedFiles({ config }) {
   const unauthorizedScreen = () => (
     <PasswordVerificationInput
       setResult={setAuthorized}
-      headingMsg={"Enter password to browse and do operations on locked files."}
+      headingMsg={
+        "Enter password to browse and perform operations on locked files."
+      }
     />
   );
 

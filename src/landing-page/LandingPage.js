@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import SetupForm from "./SetupForm";
-import LoadingPage from "./LoadingPage";
-import MyNav from "./MyNav";
-import PasswordVerificationInput from "./PasswordVerificationInput";
+import LoadingPage from "../utils/LoadingPage";
+import MyNav from "../utils/MyNav";
+import PasswordVerificationInput from "../utils/PasswordVerificationInput";
 
 function LandingPage({ doSetup, createConfig, setInitConnection }) {
   const [addresses, setAddresses] = useState([]);

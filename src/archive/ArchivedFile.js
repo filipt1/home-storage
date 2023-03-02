@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import MyNav from "./MyNav";
+import MyNav from "../utils/MyNav";
 
 function ArchivedFile({ config }) {
   const { id } = useParams();

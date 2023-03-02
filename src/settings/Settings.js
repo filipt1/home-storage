@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MyNav from "./MyNav";
+import MyNav from "../utils/MyNav";
 
 function Settings({ cfg, createConfig }) {
   const [config, setConfig] = useState(cfg);
