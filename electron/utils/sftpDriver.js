@@ -35,6 +35,7 @@ class SFTPDriver {
     try {
       return await this.sshClient.list(path);
     } catch (err) {
+      if (err.code === "ERR_NOT_CONNECTED") return false;
       console.error(err);
     }
   }

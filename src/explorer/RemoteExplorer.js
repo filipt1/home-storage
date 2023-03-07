@@ -19,6 +19,8 @@ function RemoteExplorer({ config }) {
     async function fetchFiles() {
       const res = await window.api.listFiles(path);
 
+      if (!res) return;
+
       const filesRaw = res.map((file) => ({
         name: file.name,
         directory: file.type === "d",

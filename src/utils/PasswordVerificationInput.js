@@ -6,6 +6,7 @@ function PasswordVerificationInput({ setResult, headingMsg }) {
   const verifyPassword = async () => {
     const isValid = await window.api.verifyPassword(password);
 
+    console.log(isValid);
     if (isValid) setResult(true);
   };
 

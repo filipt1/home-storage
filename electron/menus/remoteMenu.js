@@ -81,7 +81,7 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
         }
 
         currentFile.directory
-          ? sshClient.rmdir(fullFilename)
+          ? sshClient.rmdir(fullFilename, true)
           : sshClient.delete(fullFilename);
 
         app.emit("refresh-listed-files");

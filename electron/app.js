@@ -131,13 +131,19 @@ class App {
 
     ipcMain.handle("app:create-config", async (event, config) => {
       const ERROR_TITLE = "Invalid input";
-      const ERROR_MSG =
+      const ERROR_MSG_1 =
         "This directory name is restricted from use, because it is used for archive!";
+      const ERROR_MSG_2 = "Please fill in all of the fields";
 
       let newConfig = { ...config };
 
       if (config.homeRemote === ARCHIVE_DIR) {
-        showErrorDialog(ERROR_TITLE, ERROR_MSG);
+        showErrorDialog(ERROR_TITLE, ERROR_MSG_1);
+        return;
+      }
+
+      if (!config.hostname || !config.username || !config.password) {
+        showErrorDialog(ERROR_TITLE, ERROR_MSG_2);
         return;
       }
 
