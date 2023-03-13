@@ -11,7 +11,7 @@ function DirectoryInput({ createNewDir, setIsCreating }) {
         placeholder="New directory name"
         className="form-control w-75 mx-auto"
       />
-      <div className="remote-explorer__directory-input__buttons d-flex justify-content-center">
+      <div className="remote-explorer__directory-input__buttons d-flex justify-content-center mt-2">
         <i
           className="material-icons clickable"
           onClick={() => createNewDir(newDir)}

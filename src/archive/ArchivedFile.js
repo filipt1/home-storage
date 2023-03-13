@@ -25,7 +25,7 @@ function ArchivedFile({ config }) {
     .filename;
 
   return (
-    <div className="container bg-light w-75">
+    <div className="container bg-light">
       <MyNav />
       <ul className="list-group my-3">
         {versions.map((file) => (
