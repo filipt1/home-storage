@@ -3,6 +3,7 @@ import SetupForm from "./SetupForm";
 import LoadingPage from "../utils/LoadingPage";
 import MyNav from "../utils/MyNav";
 import PasswordVerificationInput from "../utils/PasswordVerificationInput";
+import LogoutButton from "../utils/LogoutButton";
 
 function LandingPage({ doSetup, createConfig, setInitConnection }) {
   const [addresses, setAddresses] = useState([]);
@@ -57,19 +58,23 @@ function LandingPage({ doSetup, createConfig, setInitConnection }) {
   );
 
   const successScreen = () => (
-    <div className="landing-page__success">
+    <div className="landing-page__success vh-100">
       {authorized && <MyNav />}
+
       {!authorized && (
-        <PasswordVerificationInput
-          setResult={setAuthorized}
-          headingMsg={"Enter password for confirmation"}
-        />
+        <div className="d-flex align-items-center flex-column justify-content-center vh-100">
+          <PasswordVerificationInput
+            setResult={setAuthorized}
+            headingMsg={"Enter password for confirmation"}
+          />
+          <LogoutButton />
+        </div>
       )}
     </div>
   );
 
   return (
-    <div className="container landing-page w-75">
+    <div className="container landing-page">
       {doSetup ? setupScreen() : successScreen()}
       {loading ? <LoadingPage /> : ""}
     </div>

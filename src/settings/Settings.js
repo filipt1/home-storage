@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import LogoutButton from "../utils/LogoutButton";
 import MyNav from "../utils/MyNav";
 
 function Settings({ cfg, createConfig }) {
@@ -9,9 +10,9 @@ function Settings({ cfg, createConfig }) {
   };
 
   return (
-    <div className="container bg-light w-75">
+    <div className="container bg-light">
       <MyNav active="settings" />
-      <div className="settings__content-wrapper w-50 mx-auto">
+      <div className="settings__content-wrapper d-sm-flex justify-content-around">
         <section className="settings__connection">
           <h3>Connection</h3>
           <div className="mb-3 setting__input">
@@ -82,14 +83,14 @@ function Settings({ cfg, createConfig }) {
             />
           </div>
         </section>
-
-        <button
-          className="btn btn-primary mb-3"
-          onClick={() => createConfig(config)}
-        >
-          Submit
-        </button>
       </div>
+      <button
+        className="btn btn-primary mb-3 mx-auto d-block"
+        onClick={() => createConfig(config)}
+      >
+        Submit
+      </button>
+      <LogoutButton />
     </div>
   );
 }

@@ -43,6 +43,8 @@ const API = {
 
   showLockedFileMenu: (filename) =>
     ipcRenderer.invoke("menu:locked-file-menu", filename),
+
+  logout: () => ipcRenderer.send("app:logout"),
 };
 
 contextBridge.exposeInMainWorld("api", API);

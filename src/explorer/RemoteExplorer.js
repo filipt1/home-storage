@@ -68,7 +68,7 @@ function RemoteExplorer({ config }) {
   );
 
   return (
-    <div className="container bg-light w-75 explorer">
+    <div className="container bg-light explorer">
       <MyNav active="explorer" />
       {/* <main className="explorer"> */}
       <h3 className="explorer__path">{path}</h3>
@@ -120,13 +120,15 @@ function RemoteExplorer({ config }) {
         />
       </div>
 
-      <FilesViewer
-        files={filteredFiles}
-        onOpen={onOpen}
-        onBack={onBack}
-        path={path}
-        setRefreshFiles={setRefreshFiles}
-      />
+      <div className="container px-2">
+        <FilesViewer
+          files={filteredFiles}
+          onOpen={onOpen}
+          onBack={onBack}
+          path={path}
+          setRefreshFiles={setRefreshFiles}
+        />
+      </div>
       {/* </main> */}
     </div>
   );

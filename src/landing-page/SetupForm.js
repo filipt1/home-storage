@@ -39,7 +39,7 @@ function SetupForm({ addresses, manualSetup, createConfig }) {
   };
 
   return (
-    <div className="landing-page__setup-form">
+    <div className="landing-page__setup-form w-50 mx-auto">
       <div className="mb-3 setting__input">
         <label htmlFor="hostname" className="form-label">
           Hostname

@@ -6,12 +6,11 @@ function PasswordVerificationInput({ setResult, headingMsg }) {
   const verifyPassword = async () => {
     const isValid = await window.api.verifyPassword(password);
 
-    console.log(isValid);
     if (isValid) setResult(true);
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column pt-5">
+    <div className="d-flex justify-content-center align-items-center flex-column pt-3">
       <h4>{headingMsg}</h4>
       <label htmlFor="password" className="form-label w-50 mx-auto">
         Password

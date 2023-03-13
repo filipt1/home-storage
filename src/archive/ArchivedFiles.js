@@ -4,7 +4,7 @@ import MyNav from "../utils/MyNav";
 
 function ArchivedFiles({ config }) {
   return (
-    <div className="container bg-light w-75">
+    <div className="container bg-light">
       <MyNav active="archived-files" />
       <ul className="list-group my-3">
         {config.archivedFiles.length ? (

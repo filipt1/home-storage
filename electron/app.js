@@ -7,7 +7,11 @@ const isDev = require("electron-is-dev");
 const SFTPDriver = require("./utils/sftpDriver");
 const runSetup = require("./utils/scanner");
 
-const { readConfig, writeConfig } = require("./handlers/config.handler");
+const {
+  readConfig,
+  writeConfig,
+  deleteConfig,
+} = require("./handlers/config.handler");
 const {
   isLocked,
   verifyPassword,
@@ -198,6 +202,12 @@ class App {
 
     ipcMain.handle("menu:locked-file-menu", (event, filename) => {
       this.sftpDriver.displayLockedFileMenu(event, filename, this.CONFIG);
+    });
+
+    ipcMain.on("app:logout", (event) => {
+      deleteConfig();
+      app.emit("app:delete-config");
+      event.sender.loadURL("http://localhost:3000");
     });
   }
 

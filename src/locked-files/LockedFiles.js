@@ -34,7 +34,7 @@ function LockedFiles({ config }) {
   );
 
   return (
-    <div className="container bg-light w-75 h-100">
+    <div className="container bg-light h-100">
       <MyNav active="locked-files" />
       {authorized ? authorizedScreen() : unauthorizedScreen()}
     </div>

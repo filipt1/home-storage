@@ -44,19 +44,23 @@ function DraggableFile({ file, path, onOpen, setRefreshFiles }) {
 
   return (
     <Draggable onStart={onStart} onStop={onStop} nodeRef={nodeRef}>
-      <li
+      <div
         ref={nodeRef}
         className={`files-table__file-row ${
           file.directory ? "clickable draggable-dropzone" : ""
-        } ${isDragging ? "no-pointer-events" : ""} list-group-item `}
+        } ${
+          isDragging ? "no-pointer-events" : ""
+        } col-sm-4 col-md-3 col-lg-2 overflow-auto`}
         id={file.name}
         onContextMenu={onContextMenu}
         onMouseEnter={onDropAreaMouseEnter}
         onMouseLeave={onDropAreaMouseLeave}
       >
-        {file.directory ? <IconFolder /> : <IconFile />}
-        <span>{file.name}</span>
-      </li>
+        <div className="card draggable-dropzone p-3" id={file.name}>
+          {file.directory ? <IconFolder /> : <IconFile />}
+          {file.name}
+        </div>
+      </div>
     </Draggable>
   );
 }

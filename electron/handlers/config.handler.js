@@ -42,7 +42,6 @@ async function writeConfig(config) {
 }
 
 function deleteConfig() {
-  console.log(CONFIG_PATH);
   fs.unlink(CONFIG_PATH, (err) => {
     if (err) console.error(err);
   });

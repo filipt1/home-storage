@@ -3,14 +3,16 @@ import DraggableFile from "./DraggableFile";
 
 function FilesViewer({ files, onBack, onOpen, path, setRefreshFiles }) {
   return (
-    <ul className="list-group my-3 files-table z-0">
-      <li
-        className="clickable files-table__back-btn draggable-go-back list-group-item"
+    <div className="row mt-3 g-2">
+      <div
+        className="clickable files-table__back-btn draggable-go-back col-sm-4 col-md-3 col-lg-2"
         onClick={onBack}
       >
-        <IconFolderOpen />
-        <span>...</span>
-      </li>
+        <div className="card draggable-go-back p-3">
+          <IconFolderOpen />
+          <span>...</span>
+        </div>
+      </div>
 
       {files.map((file) => {
         return (
@@ -23,7 +25,7 @@ function FilesViewer({ files, onBack, onOpen, path, setRefreshFiles }) {
           />
         );
       })}
-    </ul>
+    </div>
   );
 }
 
