@@ -45,6 +45,7 @@ function App() {
 
   const createConfig = async (config) => {
     if (!config.hostname || !config.username || !config.password) return;
+
     const res = await window.api.createConfig(config);
     if (res) setInitApp((prev) => !prev);
   };

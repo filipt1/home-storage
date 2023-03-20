@@ -1,10 +1,16 @@
 const net = require("net");
-const Socket = net.Socket;
 
-const PORT = 22;
-const HOST = "127.0.0.1";
+const {
+  SCANNER_START,
+  SCANNER_END,
+  LOCALHOST,
+  SSH_PORT,
+} = require("../constants");
 
+const TIMEOUT = 500;
 const IS_DEV = true;
+
+const Socket = net.Socket;
 
 async function checkAddress(address) {
   const socket = new Socket();
@@ -14,7 +20,7 @@ async function checkAddress(address) {
     let status = null;
     let connectionRefused = false;
 
-    socket.setTimeout(500);
+    socket.setTimeout(TIMEOUT);
     socket.on("timeout", function () {
       status = false;
       error = new Error("Timeout 500ms");
@@ -31,11 +37,12 @@ async function checkAddress(address) {
       else connectionRefused = true;
       status = false;
     });
+
     socket.on("close", function (err) {
       resolve({ status });
     });
 
-    socket.connect(PORT, address);
+    socket.connect(SSH_PORT, address);
   });
 }
 
@@ -43,10 +50,10 @@ async function runSetup() {
   const possibleAddresses = [];
 
   if (IS_DEV) {
-    const res = await checkAddress(HOST);
-    if (res.status) possibleAddresses.push(HOST);
+    const res = await checkAddress(LOCALHOST);
+    if (res.status) possibleAddresses.push(LOCALHOST);
   } else {
-    for (let i = 1; i < 255; i++) {
+    for (let i = SCANNER_START; i < SCANNER_END; i++) {
       // zmenit na i = 2
       const currentAddress = `192.168.0.${i}`;
       const res = await checkAddress(currentAddress);
