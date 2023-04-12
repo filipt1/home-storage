@@ -30,6 +30,7 @@ const {
   LOCKED_OPERATIONS_MSG,
   WINDOW_WIDTH,
   WINDOW_HEIGHT,
+  SHOW_DEV_TOOLS,
 } = require("./constants");
 const createApplicationMenu = require("./menus/applicationMenu");
 
@@ -54,8 +55,8 @@ class App {
     app.on("activate", () => {
       if (BrowserWindow.getAllWindows().length === 0) this.createWindow();
     });
-    app.on("quit", () => {
-      writeConfig(this.CONFIG);
+    app.on("quit", async () => {
+      await writeConfig(this.CONFIG);
     });
     app.on("initialize-archive", () => {
       initializeArchive(this.sftpDriver, this.CONFIG);
@@ -227,7 +228,7 @@ class App {
         : `file://${pathModule.join(__dirname, "../build/index.html")}`
     );
 
-    win.webContents.openDevTools();
+    if (SHOW_DEV_TOOLS) win.webContents.openDevTools();
   }
 
   async initializeConnection() {

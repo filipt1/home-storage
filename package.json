@@ -13,6 +13,7 @@
     "react-loading": "^2.0.3",
     "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.1",
+    "slash": "^5.0.0",
     "ssh2-sftp-client": "^9.0.2"
   },
   "main": "electron/main.js",

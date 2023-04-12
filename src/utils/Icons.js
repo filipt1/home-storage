@@ -9,5 +9,7 @@ export const IconFolder = () => (
 );
 
 export const IconFolderOpen = () => (
-  <span className="material-symbols-outlined inline-icon-m">folder_open</span>
+  <span className="material-symbols-outlined inline-icon-m draggable-go-back">
+    folder_open
+  </span>
 );

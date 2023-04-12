@@ -22,7 +22,7 @@ function getNewFileID(fileArray) {
 
 async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
   const mnu = new Menu();
-  const fullFilename = pathModule.join(currentPath, currentFile.name);
+  const fullFilename = pathModule.posix.join(currentPath, currentFile.name);
   const archived = config.archivedFiles.some(
     (file) => file.filename === fullFilename
   );

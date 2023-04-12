@@ -1,6 +1,8 @@
 const WINDOW_WIDTH = 800;
 const WINDOW_HEIGHT = 600;
 
+const SHOW_DEV_TOOLS = false;
+
 const ARCHIVE_DIR = "cloud-archive";
 
 const SSH_PORT = 22;
@@ -28,4 +30,5 @@ module.exports = {
   LOCALHOST,
   SCANNER_START,
   SCANNER_END,
+  SHOW_DEV_TOOLS,
 };

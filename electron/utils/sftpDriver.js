@@ -1,4 +1,4 @@
-const pathModule = require("path");
+const pathModule = require("path").posix;
 const { app, dialog } = require("electron");
 
 const Client = require("ssh2-sftp-client");

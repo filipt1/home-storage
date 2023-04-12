@@ -14,7 +14,7 @@ async function archivedFileMenu(
 ) {
   const mnu = new Menu();
   const currentFile = config.archivedFiles.find((el) => el.id == fileId);
-  const fullFilename = pathModule.join(
+  const fullFilename = pathModule.posix.join(
     ARCHIVE_DIR,
     `${fileId}-${lastModified}`
   );

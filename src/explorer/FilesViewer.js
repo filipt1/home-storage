@@ -10,7 +10,7 @@ function FilesViewer({ files, onBack, onOpen, path, setRefreshFiles }) {
       >
         <div className="card draggable-go-back p-3">
           <IconFolderOpen />
-          <span>...</span>
+          <span className="draggable-go-back">...</span>
         </div>
       </div>
 

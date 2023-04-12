@@ -29,11 +29,12 @@ async function readConfig() {
 
 async function writeConfig(config) {
   return new Promise(function (resolve) {
-    const test = pathModule.normalize(
+    const cfg = { ...config };
+    const configDir = pathModule.normalize(
       pathModule.join(app.getPath("userData"), CONFIG_DIR)
     );
-    fs.mkdir(test, () => {
-      fs.writeFile(CONFIG_PATH, JSON.stringify(config), (err) => {
+    fs.mkdir(configDir, () => {
+      fs.writeFile(CONFIG_PATH, JSON.stringify(cfg), (err) => {
         if (err) resolve(false);
         resolve(true);
       });
