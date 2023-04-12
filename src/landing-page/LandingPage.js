@@ -30,12 +30,13 @@ function LandingPage({ doSetup, createConfig, setInitConnection }) {
 
   const setupScreen = () => (
     <div className="flex-column landing-page__content-wrapper">
-      <h4 className="pt-5">Disclaimer</h4>
+      <h4 className="pt-5 text-center">Disclaimer</h4>
       <p className="text-center mb-5">
         In order to continue, you need to have a Unix-based server running
         either in your home network (then you can use Home Setup with address
-        range 192.168.0.1-254) or elsewhere (then use Manual Setup). You will be
-        prompted to enter username and password
+        range 192.168.0.1 - 254, Home Setup will trigger scan of your network,
+        this may take up to 2 minutes) or elsewhere (then use Manual Setup). You
+        will be prompted to enter username and password
       </p>
       <div className="landing-page__setup d-flex justify-content-around mb-5">
         <button className="btn btn-primary" onClick={handleHomeSetup}>

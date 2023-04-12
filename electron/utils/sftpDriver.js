@@ -7,6 +7,7 @@ const remoteMenu = require("../menus/remoteMenu");
 const archiveMenu = require("../menus/archiveMenu");
 const archivedFileMenu = require("../menus/archivedFileMenu");
 const lockedFileMenu = require("../menus/lockedFileMenu");
+const { showErrorDialog } = require("../interaction/dialogs");
 
 class SFTPDriver {
   sshClient = new Client();
@@ -36,6 +37,10 @@ class SFTPDriver {
       return await this.sshClient.list(path);
     } catch (err) {
       if (err.code === "ERR_NOT_CONNECTED") return false;
+      if (err.code === 2) {
+        showErrorDialog("Error", `The ${path} file does not exist!`);
+        return;
+      }
       console.error(err);
     }
   }
