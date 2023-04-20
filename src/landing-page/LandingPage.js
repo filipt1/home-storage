@@ -74,10 +74,11 @@ function LandingPage({ doSetup, createConfig, setInitConnection }) {
     </div>
   );
 
-  return (
+  return loading ? (
+    <LoadingPage />
+  ) : (
     <div className="container landing-page">
       {doSetup ? setupScreen() : successScreen()}
-      {loading ? <LoadingPage /> : ""}
     </div>
   );
 }

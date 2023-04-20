@@ -5,6 +5,7 @@ const {
   SCANNER_END,
   LOCALHOST,
   SSH_PORT,
+  SCAN_LOCALHOST,
 } = require("../constants");
 
 const TIMEOUT = 500;
@@ -49,7 +50,7 @@ async function checkAddress(address) {
 async function runSetup() {
   const possibleAddresses = [];
 
-  if (IS_DEV) {
+  if (SCAN_LOCALHOST) {
     const res = await checkAddress(LOCALHOST);
     if (res.status) possibleAddresses.push(LOCALHOST);
   } else {

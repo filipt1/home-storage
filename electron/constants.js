@@ -2,6 +2,7 @@ const WINDOW_WIDTH = 800;
 const WINDOW_HEIGHT = 600;
 
 const SHOW_DEV_TOOLS = false;
+const SCAN_LOCALHOST = false;
 
 const ARCHIVE_DIR = "cloud-archive";
 
@@ -31,4 +32,5 @@ module.exports = {
   SCANNER_START,
   SCANNER_END,
   SHOW_DEV_TOOLS,
+  SCAN_LOCALHOST,
 };
