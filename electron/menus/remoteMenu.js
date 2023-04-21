@@ -105,6 +105,8 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
             lastModified: stats.modifyTime,
           });
 
+          app.emit("app:write-config");
+
           showDisclaimer(DISCLAIMER_MSG);
         },
       })
@@ -117,6 +119,7 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
       enabled: !fileIsLocked,
       click() {
         config.lockedFiles.push(fullFilename);
+        app.emit("app:write-config");
       },
     })
   );

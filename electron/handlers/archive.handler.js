@@ -1,3 +1,5 @@
+const { app } = require("electron");
+
 const { ARCHIVE_DIR } = require("../constants");
 const { showErrorDialog } = require("../interaction/dialogs");
 
@@ -70,6 +72,8 @@ async function unarchiveFile(sshClient, fileId, config) {
   }
 
   config.archivedFiles = config.archivedFiles.filter((el) => el.id !== fileId);
+
+  app.emit("app:write-config");
 }
 
 async function getArchivedFile(sftpDriver, fileId) {

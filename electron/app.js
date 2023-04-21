@@ -55,15 +55,15 @@ class App {
     app.on("activate", () => {
       if (BrowserWindow.getAllWindows().length === 0) this.createWindow();
     });
-    app.on("quit", async () => {
-      await writeConfig(this.CONFIG);
-    });
     app.on("initialize-archive", () => {
       initializeArchive(this.sftpDriver, this.CONFIG);
     });
     app.on("app:delete-config", () => {
       this.CONFIG = {};
+      app.emit("app:write-config");
     });
+
+    app.on("app:write-config", () => writeConfig(this.CONFIG));
 
     this.initializeIpc();
   }

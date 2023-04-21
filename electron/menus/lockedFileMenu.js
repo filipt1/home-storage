@@ -70,6 +70,8 @@ async function lockedFileMenu(event, filename, sshClient, config) {
         const DISCLAIMER_MSG = "Changes will be applied after app restart.";
         config.lockedFiles.pop(filename);
 
+        app.emit("app:write-config");
+
         showDisclaimer(DISCLAIMER_MSG);
       },
     })
