@@ -44,9 +44,9 @@ class App {
 
     app.disableHardwareAcceleration();
 
+    app.on("ready", createApplicationMenu);
     app.on("ready", this.createWindow);
 
-    app.on("ready", createApplicationMenu);
     app.on("window-all-closed", () => {
       if (process.platform !== "darwin") {
         app.quit();
