@@ -11,6 +11,12 @@ function SetupForm({ addresses, manualSetup, createConfig }) {
     setConfig((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    createConfig(config);
+  };
+
   const getAddressInput = () => {
     return manualSetup ? (
       <input
@@ -39,7 +45,10 @@ function SetupForm({ addresses, manualSetup, createConfig }) {
   };
 
   return (
-    <div className="landing-page__setup-form w-50 mx-auto">
+    <form
+      className="landing-page__setup-form w-50 mx-auto"
+      onSubmit={handleSubmit}
+    >
       <div className="mb-3 setting__input">
         <label htmlFor="hostname" className="form-label">
           Hostname
@@ -73,13 +82,10 @@ function SetupForm({ addresses, manualSetup, createConfig }) {
           id="password"
         />
       </div>
-      <button
-        className="btn btn-primary mb-3"
-        onClick={() => createConfig(config)}
-      >
+      <button className="btn btn-primary mb-3" type="submit">
         Submit
       </button>
-    </div>
+    </form>
   );
 }
 

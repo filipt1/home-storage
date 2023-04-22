@@ -24,6 +24,8 @@ function RemoteExplorer({ config }) {
       const filesRaw = res.map((file) => ({
         name: file.name,
         directory: file.type === "d",
+        size: file.size,
+        modifyTime: file.modifyTime,
       }));
 
       setFiles(filesRaw);
@@ -49,11 +51,13 @@ function RemoteExplorer({ config }) {
   };
 
   const uploadFileDialog = async () => {
-    await window.api.showUploadFileDialog(path);
+    const res = await window.api.showUploadFileDialog(path);
+    if (res) setRefreshFiles(true);
   };
 
   const uploadDirectoryDialog = async () => {
-    await window.api.showUploadDirDialog(path);
+    const res = await window.api.showUploadDirDialog(path);
+    if (res) setRefreshFiles(true);
   };
 
   const createNewDir = (newDir) => {
@@ -76,18 +80,21 @@ function RemoteExplorer({ config }) {
         <span
           className="material-symbols-outlined clickable"
           onClick={uploadFileDialog}
+          title="Upload a file"
         >
           upload_file
         </span>
         <span
           className="material-symbols-outlined clickable"
           onClick={uploadDirectoryDialog}
+          title="Upload a folder"
         >
           drive_folder_upload
         </span>
         <span
           className="material-symbols-outlined clickable"
           onClick={() => setIsCreating(true)}
+          title="Create a new folder"
         >
           create_new_folder
         </span>

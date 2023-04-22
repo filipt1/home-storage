@@ -9,10 +9,18 @@ function Settings({ cfg, createConfig }) {
     setConfig((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createConfig(config);
+  };
+
   return (
     <div className="container bg-light">
       <MyNav active="settings" />
-      <div className="settings__content-wrapper d-sm-flex justify-content-around">
+      <form
+        className="settings__content-wrapper d-sm-flex justify-content-around"
+        onSubmit={handleSubmit}
+      >
         <section className="settings__connection">
           <h3>Connection</h3>
           <div className="mb-3 setting__input">
@@ -82,15 +90,15 @@ function Settings({ cfg, createConfig }) {
               id="homeRemote"
             />
           </div>
+          <button
+            className="btn btn-primary mb-3 mx-auto d-block"
+            type="submit"
+          >
+            Submit
+          </button>
+          <LogoutButton />
         </section>
-      </div>
-      <button
-        className="btn btn-primary mb-3 mx-auto d-block"
-        onClick={() => createConfig(config)}
-      >
-        Submit
-      </button>
-      <LogoutButton />
+      </form>
     </div>
   );
 }

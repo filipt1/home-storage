@@ -95,7 +95,6 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
         label: "Archive",
         enabled: !archived && isArchiveActivated,
         async click() {
-          const DISCLAIMER_MSG = "Changes will be applied after app restart.";
           const stats = await sshClient.stat(fullFilename);
           archiveActivated(sshClient);
 
@@ -106,8 +105,6 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
           });
 
           app.emit("app:write-config");
-
-          showDisclaimer(DISCLAIMER_MSG);
         },
       })
     );

@@ -47,6 +47,8 @@ class App {
     app.on("ready", createApplicationMenu);
     app.on("ready", this.createWindow);
 
+    app.on("will-quit", () => this.sftpDriver.disconnect());
+
     app.on("window-all-closed", () => {
       if (process.platform !== "darwin") {
         app.quit();
@@ -89,15 +91,15 @@ class App {
     );
 
     ipcMain.handle("dialog:upload-file", async (event, currentPath) => {
-      this.sftpDriver
-        .uploadFileDialog(event, currentPath)
-        .then((res) => showNotification(UPLOAD_TITLE, res));
+      const res = await this.sftpDriver.uploadFileDialog(event, currentPath);
+      showNotification(UPLOAD_TITLE, res);
+      return res;
     });
 
     ipcMain.handle("dialog:upload-directory", async (event, currentPath) => {
-      this.sftpDriver
-        .uploadDirDialog(event, currentPath)
-        .then((res) => showNotification(UPLOAD_TITLE, res));
+      const res = await this.sftpDriver.uploadDirDialog(event, currentPath);
+      showNotification(UPLOAD_TITLE, res);
+      return res;
     });
 
     ipcMain.handle(
@@ -159,6 +161,11 @@ class App {
       newConfig.archivedFiles = config.archivedFiles ?? [];
       newConfig.lockedFiles = config.lockedFiles ?? [];
       this.plainPassword = this.plainPassword ?? config.password;
+
+      showNotification(
+        "Success",
+        "Configuration file has been successfully created!"
+      );
 
       return await writeConfig(newConfig);
     });

@@ -1,22 +1,17 @@
-import React from "react";
-import ArchivedFileLink from "./ArchivedFileLink";
 import MyNav from "../utils/MyNav";
+import useConfig from "../hooks/useConfig";
+import ArchiveList from "./ArchiveList";
+import LoadingPage from "../utils/LoadingPage";
 
-function ArchivedFiles({ config }) {
-  return (
+function ArchivedFiles() {
+  const { config, loading } = useConfig();
+
+  return loading ? (
+    <LoadingPage />
+  ) : (
     <div className="container bg-light">
       <MyNav active="archived-files" />
-      <ul className="list-group my-3">
-        {config.archivedFiles.length ? (
-          config.archivedFiles.map((file) => (
-            <ArchivedFileLink key={file.id} file={file} />
-          ))
-        ) : (
-          <li className="list-group-item">
-            No files have been archived so far
-          </li>
-        )}
-      </ul>
+      <ArchiveList config={config} />
     </div>
   );
 }

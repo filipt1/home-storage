@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import useConfig from "../hooks/useConfig";
 import MyNav from "../utils/MyNav";
 import PasswordVerificationInput from "../utils/PasswordVerificationInput";
 
-function LockedFiles({ config }) {
+function LockedFiles() {
   const [authorized, setAuthorized] = useState(false);
+  const config = useConfig();
 
   const unauthorizedScreen = () => (
     <PasswordVerificationInput

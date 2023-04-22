@@ -9,6 +9,10 @@ function PasswordVerificationInput({ setResult, headingMsg }) {
     if (isValid) setResult(true);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") verifyPassword();
+  };
+
   return (
     <div className="d-flex justify-content-center align-items-center flex-column pt-3">
       <h4>{headingMsg}</h4>
@@ -21,6 +25,7 @@ function PasswordVerificationInput({ setResult, headingMsg }) {
         id="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
       <button className="btn btn-primary mb-3" onClick={() => verifyPassword()}>
         Submit

@@ -2,6 +2,15 @@ import React, { useState, useRef } from "react";
 import Draggable from "react-draggable";
 import { IconFile, IconFolder } from "../utils/Icons";
 
+const formatSize = (size) => {
+  var i = Math.floor(Math.log(size) / Math.log(1024));
+  return (
+    (size / Math.pow(1024, i)).toFixed(2) * 1 +
+    " " +
+    ["B", "kB", "MB", "GB", "TB"][i]
+  );
+};
+
 function DraggableFile({ file, path, onOpen, setRefreshFiles }) {
   const [isDragging, setIsDragging] = useState(false);
   const nodeRef = useRef(null);
@@ -44,23 +53,30 @@ function DraggableFile({ file, path, onOpen, setRefreshFiles }) {
 
   return (
     <Draggable onStart={onStart} onStop={onStop} nodeRef={nodeRef}>
-      <div
+      <li
         ref={nodeRef}
         className={`files-table__file-row ${
           file.directory ? "clickable draggable-dropzone" : ""
-        } ${
-          isDragging ? "no-pointer-events" : ""
-        } col-sm-4 col-md-3 col-lg-2 overflow-auto`}
+        } ${isDragging ? "no-pointer-events" : ""} list-group-item`}
         id={file.name}
         onContextMenu={onContextMenu}
         onMouseEnter={onDropAreaMouseEnter}
         onMouseLeave={onDropAreaMouseLeave}
       >
-        <div className="card draggable-dropzone p-3" id={file.name}>
-          {file.directory ? <IconFolder /> : <IconFile />}
+        {file.directory ? <IconFolder /> : <IconFile />}
+        <span
+          id={file.name}
+          className={`${file.directory ? "draggable-dropzone" : ""} ${
+            isDragging ? "dragging" : ""
+          }`}
+        >
           {file.name}
-        </div>
-      </div>
+          <br />
+          {new Date(file.modifyTime).toLocaleString()}
+          {!file.directory ? ` - ${formatSize(file.size)}` : ""}
+          <br />
+        </span>
+      </li>
     </Draggable>
   );
 }

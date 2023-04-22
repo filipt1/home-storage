@@ -10,12 +10,17 @@ function PasswordPrompt({ setPasswordPrompt, path, setPath, lockedFile }) {
     if (isValid) setPasswordPrompt(false);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") verifyPassword();
+  };
+
   return (
     <div className="position-absolute w-50 bg-light h-25 z-3">
       <input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder="Password"
         className="form-control w-75 mx-auto"
       />

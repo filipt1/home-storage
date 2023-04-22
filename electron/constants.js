@@ -1,7 +1,7 @@
 const WINDOW_WIDTH = 800;
 const WINDOW_HEIGHT = 600;
 
-const SHOW_DEV_TOOLS = false;
+const SHOW_DEV_TOOLS = true;
 const SCAN_LOCALHOST = false;
 
 const ARCHIVE_DIR = "cloud-archive";
