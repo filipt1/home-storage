@@ -1,4 +1,5 @@
 const pathModule = require("path").posix;
+const osPathModule = require("path");
 const { app, dialog } = require("electron");
 
 const Client = require("ssh2-sftp-client");
@@ -59,7 +60,7 @@ class SFTPDriver {
     try {
       return await this.sshClient.put(
         filePaths[0],
-        pathModule.join(currentPath, pathModule.basename(filePaths[0]))
+        pathModule.join(currentPath, osPathModule.basename(filePaths[0]))
       );
     } catch (err) {
       console.error(err);
@@ -76,7 +77,7 @@ class SFTPDriver {
     try {
       return await this.sshClient.uploadDir(
         filePaths[0],
-        pathModule.join(currentPath, pathModule.basename(filePaths[0]))
+        pathModule.join(currentPath, osPathModule.basename(filePaths[0]))
       );
     } catch (err) {
       console.error(err);
