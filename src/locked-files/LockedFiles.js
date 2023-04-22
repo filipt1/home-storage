@@ -5,7 +5,7 @@ import PasswordVerificationInput from "../utils/PasswordVerificationInput";
 
 function LockedFiles() {
   const [authorized, setAuthorized] = useState(false);
-  const config = useConfig();
+  const { config } = useConfig();
 
   const unauthorizedScreen = () => (
     <PasswordVerificationInput

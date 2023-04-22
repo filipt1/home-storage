@@ -33,10 +33,10 @@ function LandingPage({ doSetup, createConfig, setInitConnection }) {
       <h4 className="pt-5 text-center">Disclaimer</h4>
       <p className="text-center mb-5">
         In order to continue, you need to have a Unix-based server running
-        either in your home network (then you can use Home Setup with address
-        range 192.168.0.1 - 254, Home Setup will trigger scan of your network,
-        this may take up to 2 minutes) or elsewhere (then use Manual Setup). You
-        will be prompted to enter username and password
+        either in your home network (then you can use Home Setup address range
+        x.y.z.1 - 254, Home Setup will trigger scan of your network, this may
+        take up to 2 minutes) or elsewhere (then use Manual Setup). You will be
+        prompted to enter username and password
       </p>
       <div className="landing-page__setup d-flex justify-content-around mb-5">
         <button className="btn btn-primary" onClick={handleHomeSetup}>

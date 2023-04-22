@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import useConfig from "../hooks/useConfig";
+import LoadingPage from "../utils/LoadingPage";
 import MyNav from "../utils/MyNav";
 
-function ArchivedFile({ config }) {
+function ArchivedFile() {
   const { id } = useParams();
+  const { config, loading } = useConfig();
 
   const [versions, setVersions] = useState([]);
 
@@ -21,10 +24,9 @@ function ArchivedFile({ config }) {
     getArchivedFile();
   }, [id]);
 
-  const FILENAME = config.archivedFiles.find((el) => el.id === parseInt(id))
-    .filename;
-
-  return (
+  return loading ? (
+    <LoadingPage />
+  ) : (
     <div className="container bg-light">
       <MyNav />
       <ul className="list-group my-3">
@@ -37,7 +39,12 @@ function ArchivedFile({ config }) {
             }
           >
             <div>
-              <div className="fw-bold">{FILENAME}</div>
+              <div className="fw-bold">
+                {
+                  config.archivedFiles.find((el) => el.id === parseInt(id))
+                    .filename
+                }
+              </div>
               <div className="text-muted">
                 {new Date(parseInt(file.split("-")[1])).toLocaleString()}
               </div>
