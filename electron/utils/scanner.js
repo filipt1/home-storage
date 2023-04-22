@@ -1,4 +1,5 @@
 const net = require("net");
+const os = require("os");
 
 const {
   SCANNER_START,
@@ -47,7 +48,17 @@ async function checkAddress(address) {
   });
 }
 
+function getAddressSpace() {
+  const networkInterfaces = os.networkInterfaces();
+  const splitAddress = networkInterfaces.en0[1].address.split(".");
+  splitAddress.pop();
+  const baseAddress = splitAddress.join(".");
+
+  return baseAddress;
+}
+
 async function runSetup() {
+  const addressSpace = getAddressSpace();
   const possibleAddresses = [];
 
   if (SCAN_LOCALHOST) {
@@ -55,8 +66,7 @@ async function runSetup() {
     if (res.status) possibleAddresses.push(LOCALHOST);
   } else {
     for (let i = SCANNER_START; i < SCANNER_END; i++) {
-      // zmenit na i = 2
-      const currentAddress = `192.168.0.${i}`;
+      const currentAddress = `${addressSpace}.${i}`;
       const res = await checkAddress(currentAddress);
 
       if (res.status) possibleAddresses.push(currentAddress);
