@@ -87,6 +87,7 @@ async function getArchivedFile(sftpDriver, fileId) {
 }
 
 module.exports = {
+  archiveFile,
   initializeArchive,
   unarchiveFile,
   getArchivedFile,

@@ -8,8 +8,15 @@ const {
   showDisclaimer,
 } = require("../interaction/dialogs");
 const { isLocked } = require("../handlers/encryption.handler");
-const { LOCKED_OPERATIONS_MSG, DOWNLOAD_TITLE } = require("../constants");
-const { archiveActivated } = require("../handlers/archive.handler");
+const {
+  LOCKED_OPERATIONS_MSG,
+  DOWNLOAD_TITLE,
+  ARCHIVE_DIR,
+} = require("../constants");
+const {
+  archiveActivated,
+  archiveFile,
+} = require("../handlers/archive.handler");
 
 function getNewFileID(fileArray) {
   const id = fileArray.reduce(
@@ -96,13 +103,23 @@ async function remoteMenu(event, currentPath, currentFile, sshClient, config) {
         enabled: !archived && isArchiveActivated,
         async click() {
           const stats = await sshClient.stat(fullFilename);
+          const newFileID = getNewFileID(config.archivedFiles);
           archiveActivated(sshClient);
 
           config.archivedFiles.push({
-            id: getNewFileID(config.archivedFiles),
+            id: newFileID,
             filename: fullFilename,
             lastModified: stats.modifyTime,
           });
+
+          try {
+            sshClient.rcopy(
+              fullFilename,
+              `${ARCHIVE_DIR}/${newFileID}-${stats.modifyTime}`
+            );
+          } catch (err) {
+            console.log(err);
+          }
 
           app.emit("app:write-config");
         },
