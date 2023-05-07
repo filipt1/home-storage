@@ -67,7 +67,7 @@ async function lockedFileMenu(event, filename, sshClient, config) {
     new MenuItem({
       label: "Unlock",
       click() {
-        const DISCLAIMER_MSG = "Changes will be applied after app restart.";
+        const DISCLAIMER_MSG = "Successfully unlocked.";
         config.lockedFiles.pop(filename);
 
         app.emit("app:write-config");
